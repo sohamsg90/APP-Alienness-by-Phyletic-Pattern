@@ -14,11 +14,10 @@ The program has been extensively tested and working on Linux systems. Due to the
  5. NCBI taxonomy database
 
 Individual setup scripts are provided for need based installation.
+*a
+*b
 
 If none of the dependencies have been previously installed, please run `complete_setup.sh`
 
-## Software environment
 
-
-## Dependencies
 

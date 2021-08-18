@@ -1,4 +1,7 @@
-`sudo chmod 777 APP.pl
+# File permissions set up
+sudo chmod 777 APP.pl
 
-sudo chmod $HOME/bin_APP/
-`
+# Create a directory in $HOME for associated dependencies 
+mkdir $HOME/bin_APP/
+
+

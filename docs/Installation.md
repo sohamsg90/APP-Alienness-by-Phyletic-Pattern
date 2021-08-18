@@ -6,7 +6,8 @@ The program has been extensively tested and working on Linux systems. Due to the
 
 ##  Software environment/ dependencies
  APP has been written in Perl. Perl comes pre-installed with most linux distributions. 
- Other dependencies include installation of the following programs. Individual setup scripts are provided for need based installation.
+ 
+ Other dependencies include installation of the following programs. Individual setup scripts are provided for requirement-based installation.
   
  1. Command-line NCBI BLAST toolkit. If already installed, please ignore. To install: 
  ```
@@ -29,11 +30,13 @@ sh scripts/installation/setup_blast.sh
  ```
 sh scripts/installation/setup_blast.sh
 ```
-```
-sh setup_blast.sh
-```
 
-If none of the dependencies have been previously installed, please run `complete_setup.sh`
+
+If none of the dependencies have been previously installed, please run: 
+
+```
+sh complete_setup.sh
+```
 
 
 

@@ -1,9 +1,10 @@
-Installation
-Operating system
+#Installation
 
-Computational dependencies
+##Operating system
 
-Software environment
+##Computational dependencies
 
-Dependencies
+##Software environment
+
+##Dependencies
 

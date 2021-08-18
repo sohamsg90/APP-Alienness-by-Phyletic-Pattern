@@ -12,10 +12,9 @@ The program has been extensively tested and working on Linux systems. Due to the
  3. Command-line TaxonKit NCBI Taxonomy toolkit
  4. Command-line csvtk CSV/TSV toolkit
  5. NCBI taxonomy database
-
+```
 Individual setup scripts are provided for need based installation.
-*a
-*b
+```
 
 If none of the dependencies have been previously installed, please run `complete_setup.sh`
 

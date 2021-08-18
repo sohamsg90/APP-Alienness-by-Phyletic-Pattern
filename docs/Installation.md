@@ -15,7 +15,7 @@ The program has been extensively tested and working on Linux systems. Due to the
 
 Individual setup scripts are provided for need based installation.
 
-If none of the dependencies have been previously installed, please run **complete_setup.sh**``
+If none of the dependencies have been previously installed, please run `complete_setup.sh`
 
 ## Software environment
 

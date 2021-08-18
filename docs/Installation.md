@@ -6,14 +6,31 @@ The program has been extensively tested and working on Linux systems. Due to the
 
 ##  Software environment/ dependencies
  APP has been written in Perl. Perl comes pre-installed with most linux distributions. 
- Other dependencies include installation of the following programs.
- 1. Command-line BLAST toolkit
- 2. Command-line NCBI Eutilities toolkit
- 3. Command-line TaxonKit NCBI Taxonomy toolkit
- 4. Command-line csvtk CSV/TSV toolkit
- 5. NCBI taxonomy database
+ Other dependencies include installation of the following programs. Individual setup scripts are provided for need based installation.
+  
+ 1. Command-line NCBI BLAST toolkit. If already installed, please ignore. To install: 
+ ```
+sh scripts/installation/setup_blast.sh
 ```
-Individual setup scripts are provided for need based installation.
+ 2. Command-line NCBI Eutilities toolkit. If already installed, please ignore. To install: 
+ ```
+sh scripts/installation/setup_blast.sh
+```
+ 
+ 3. Command-line TaxonKit NCBI Taxonomy toolkit. If already installed, please ignore. To install: 
+ ```
+sh scripts/installation/setup_blast.sh
+```
+ 4. Command-line csvtk CSV/TSV toolkit. If already installed, please ignore. To install: 
+ ```
+sh scripts/installation/setup_blast.sh
+```
+ 5. NCBI taxonomy database. If already installed, please ignore. To install: 
+ ```
+sh scripts/installation/setup_blast.sh
+```
+```
+sh setup_blast.sh
 ```
 
 If none of the dependencies have been previously installed, please run `complete_setup.sh`

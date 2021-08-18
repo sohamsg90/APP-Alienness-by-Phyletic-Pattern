@@ -35,7 +35,7 @@ sh scripts/installation/setup_blast.sh
 If none of the dependencies have been previously installed, please run: 
 
 ```
-sh complete_setup.sh
+sh scripts/installation/complete_setup.sh
 ```
 
 

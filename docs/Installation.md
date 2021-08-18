@@ -37,6 +37,9 @@ If none of the dependencies have been previously installed, please run:
 ```
 sh scripts/installation/complete_setup.sh
 ```
-
+## Set permissions on file
+```
+sudo chmod 777 $HOME/bin_APP
+```
 
 

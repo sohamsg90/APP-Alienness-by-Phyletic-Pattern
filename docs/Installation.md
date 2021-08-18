@@ -13,22 +13,25 @@ The program has been extensively tested and working on Linux systems. Due to the
  ```
 sh scripts/installation/setup_blast.sh
 ```
+
  2. Command-line NCBI Eutilities toolkit. If already installed, please ignore. To install: 
  ```
-sh scripts/installation/setup_blast.sh
+sh scripts/installation/setup_Eutilities.sh
 ```
  
  3. Command-line TaxonKit NCBI Taxonomy toolkit. If already installed, please ignore. To install: 
  ```
-sh scripts/installation/setup_blast.sh
+sh scripts/installation/setup_TaxonKit.sh
 ```
+
  4. Command-line csvtk CSV/TSV toolkit. If already installed, please ignore. To install: 
  ```
-sh scripts/installation/setup_blast.sh
+sh scripts/installation/setup_csvtk.sh
 ```
+
  5. NCBI taxonomy database. If already installed, please ignore. To install: 
  ```
-sh scripts/installation/setup_blast.sh
+sh scripts/installation/setup_NCBI_taxDump.sh
 ```
 
 

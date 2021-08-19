@@ -9,6 +9,7 @@ awk -F "\t" '{print $1}' ftpdirpaths.txt >  all_RefSeq_sequential_TAXIDS.txt
 
 ##Extract species name and ftp links for later
 awk -F "\t" '{print $1"\t"$3"\t"$8}' ftpdirpaths.txt > extracted_ftpdirpaths.txt
+
 #Add headers to file
 sed -i '1i taxid\tspecies_name\tftp_links' extracted_ftpdirpaths.txt
 
@@ -33,6 +34,7 @@ cat all_RefSeq_sequential_TAXIDS_lineage.txt  \
     
 ##Combine all files together
 paste -d "\t" all_RefSeq_sequential_TAXIDS_lineage_byWord.txt all_RefSeq_sequential_TAXIDS_lineage_byID.txt extracted_ftpdirpaths.txt > temp1.txt
+
 ##Remove repeatative columns and generate final file
 awk -F "\t" '{print $2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$10"\t"$11"\t"$12"\t"$13"\t"$14"\t"$15"\t"$16"\t"$17"\t"$18"\t"$19}' temp1.txt >  1.REFSEQ_all_kingdoms_ftplinks_lineage.txt
 

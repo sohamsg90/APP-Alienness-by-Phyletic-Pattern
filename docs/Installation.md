@@ -9,33 +9,33 @@ The program has been extensively tested and working on Linux systems. Due to the
  
  Other dependencies include installation of the following programs. Individual setup scripts are provided for requirement-based installation.
   
- 1. Command-line NCBI BLAST toolkit. If already installed, please ignore. To install: 
+ 1. Command-line NCBI BLAST toolkit. If already installed, please ignore, else: 
  ```
 sh scripts/installation/setup_blast.sh
 ```
 
- 2. Command-line NCBI Eutilities toolkit. If already installed, please ignore. To install: 
+ 2. Command-line NCBI Eutilities toolkit. If already installed, please ignore, else: 
  ```
 sh scripts/installation/setup_Eutilities.sh
 ```
  
- 3. Command-line TaxonKit NCBI Taxonomy toolkit. If already installed, please ignore. To install: 
+ 3. Command-line TaxonKit NCBI Taxonomy toolkit. If already installed, please ignore, else: 
  ```
 sh scripts/installation/setup_TaxonKit.sh
 ```
 
- 4. Command-line csvtk CSV/TSV toolkit. If already installed, please ignore. To install: 
+ 4. Command-line csvtk CSV/TSV toolkit. If already installed, please ignore, else: 
  ```
 sh scripts/installation/setup_csvtk.sh
 ```
 
- 5. NCBI taxonomy database. If already installed, please ignore. To install: 
+ 5. NCBI taxonomy database. If already installed, please ignore, else: 
  ```
 sh scripts/installation/setup_NCBI_taxDump.sh
 ```
 
 
-If none of the dependencies have been previously installed, please run: 
+If none of the dependencies have been previously installed, else: 
 
 ```
 sh scripts/installation/complete_setup.sh

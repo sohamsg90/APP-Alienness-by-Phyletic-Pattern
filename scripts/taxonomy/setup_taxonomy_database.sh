@@ -13,11 +13,11 @@ awk -F "\t" '{print $1"\t"$3"\t"$8}' ftpdirpaths.txt > extracted_ftpdirpaths.txt
 sed -i '1i taxid\tspecies_name\tftp_links' extracted_ftpdirpaths.txt
 
 ##Extract lineage using TaxonKit 
-taxonkit lineage all_RefSeq_sequential_TAXIDS.txt --data-dir /home/sohamsengupta/NCBI_taxonomy/taxdump > all_RefSeq_sequential_TAXIDS_lineage.txt
+taxonkit lineage all_RefSeq_sequential_TAXIDS.txt --data-dir $HOME/bin_APP/ > all_RefSeq_sequential_TAXIDS_lineage.txt
 
 ##Extract taxonomic id lineage using TaxonKit
 cat all_RefSeq_sequential_TAXIDS_lineage.txt  \
-    | taxonkit reformat --data-dir /home/sohamsengupta/NCBI_taxonomy/taxdump -t  \
+    | taxonkit reformat --data-dir $HOME/bin_APP/ -t  \
     | csvtk -H -t cut -f 1,4 \
     | csvtk -H -t sep -f 2 -s ';' -R \
     | csvtk add-header -t -n taxid,kingdom,phylum,class,order,family,genus,species \
@@ -25,7 +25,7 @@ cat all_RefSeq_sequential_TAXIDS_lineage.txt  \
     
 ##Extract full name lineage using TaxonKit
 cat all_RefSeq_sequential_TAXIDS_lineage.txt  \
-    | taxonkit reformat --data-dir /home/sohamsengupta/NCBI_taxonomy/taxdump -t  \
+    | taxonkit reformat --data-dir $HOME/bin_APP/ -t  \
     | csvtk -H -t cut -f 1,3 \
     | csvtk -H -t sep -f 2 -s ';' -R \
     | csvtk add-header -t -n taxid,kingdom,phylum,class,order,family,genus,species \

@@ -35,7 +35,7 @@ sh scripts/installation/setup_NCBI_taxDump.sh
 ```
 
 
-If none of the dependencies have been previously installed, else: 
+If none of the dependencies have been previously installed, please run: 
 
 ```
 sh scripts/installation/complete_setup.sh

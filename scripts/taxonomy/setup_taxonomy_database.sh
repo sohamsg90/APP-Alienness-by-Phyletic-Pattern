@@ -4,7 +4,7 @@ wget -c https://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/assembly_summary_r
 ##Extract recods which are either "Complete Genome" or "Chromosome"
 awk -F "\t" '$12=="Complete Genome" || $12=="Chromosome" && $11=="latest"{print $6"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$12"\t"$20}' assembly_summary_refseq.txt > ftpdirpaths.txt
 
-##Extract taxids from recordsin order. Not sorted or duplicates removed, to maintain order.
+##Extract taxids from records in order. Not sorted or duplicates removed, to maintain order.
 awk -F "\t" '{print $1}' ftpdirpaths.txt >  all_RefSeq_sequential_TAXIDS.txt
 
 ##Extract species name and ftp links for later

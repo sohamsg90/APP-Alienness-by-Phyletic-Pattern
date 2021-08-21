@@ -41,12 +41,20 @@ Alternatively, the user can supply the genome accession number as a command-line
 
 `perl APP.pl -query NC_004088 -f accession`
 
-Note that the input type has changed to `accession`. With the pre-installed NCBI eutilities, the program  will download the complete proteome accordinly.
+Note that the input type has changed to `accession`. With the help of pre-installed NCBI eutilities, the program  will download the complete proteome accordinly.
 
 ***Tips:***
+
 **Option 1** is directed when the user has a limited set of sequences to analyze, belonging to the same genome.
 
 **Option 2** is when the user wants to perform phyletic pattern analysis on an entire genome of interest.
+
+### Execution
+To run the program, simply type in:
+
+`perl APP.pl -q <query> -f <fileType>`
+
+***Note:*** The main script file, query sequence file and taxonomic ID file must be placed in the same working directory.
 
 
 

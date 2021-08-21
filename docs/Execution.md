@@ -35,12 +35,12 @@ APP has the capability to input either a multiFASTA file or download the entire 
 **Option 1:**
 In the former case, a file must be provided to the program specifying the type of input.
 
-`perl APP.pl -query example.fasta -f multifasta`
+> `perl APP.pl -query example.fasta -f multifasta`
 
 **Option 2:**
 Alternatively, the user can supply the genome accession number as a command-line input.
 
-`perl APP.pl -query NC_004088 -f accession`
+> `perl APP.pl -query NC_004088 -f accession`
 
 Note that the input type has changed to `accession`. With the help of pre-installed NCBI eutilities, the program  will download the complete proteome accordinly.
 
@@ -53,7 +53,7 @@ Note that the input type has changed to `accession`. With the help of pre-instal
 ### Execution
 To run the program, simply type in:
 
-`perl APP.pl -q <query> -f <fileType>`
+> `perl APP.pl -q <query> -f <fileType>`
 
 ***Note:*** The main script file, query sequence file and taxonomic ID file must be placed in the same working directory.
 

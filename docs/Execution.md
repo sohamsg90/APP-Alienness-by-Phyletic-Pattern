@@ -78,7 +78,7 @@ Following set of options are available with the program.
 
 -vv -Provide detailed progress messages. Default set to 0.
 
-### Expected space requirements
+## Expected space requirements
 
 APP downloads genomes from NCBI ftp server in real-time. Henceforth, depending on the availability of completely sequenced genomes, and the abundance of genomes of the associated taxonomic ranks, the size of the downloaded database will vary, from genome to genome.
 

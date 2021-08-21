@@ -35,12 +35,12 @@ APP has the capability to input either a multiFASTA file or download the entire 
 **Option 1:**
 In the former case, a file must be provided to the program specifying the type of input.
 
-> `perl APP.pl -query example.fasta -f multifasta`
+ `perl APP.pl -query example.fasta -f multifasta`
 
 **Option 2:**
 Alternatively, the user can supply the genome accession number as a command-line input.
 
-> `perl APP.pl -query NC_004088 -f accession`
+`perl APP.pl -query NC_004088 -f accession`
 
 Note that the input type has changed to `accession`. With the help of pre-installed NCBI eutilities, the program  will download the complete proteome accordinly.
 
@@ -53,9 +53,30 @@ Note that the input type has changed to `accession`. With the help of pre-instal
 ### Execution
 To run the program, simply type in:
 
-> `perl APP.pl -q <query> -f <fileType>`
+`perl APP.pl -q <query> -f <fileType>`
 
 ***Note:*** The main script file, query sequence file and taxonomic ID file must be placed in the same working directory.
+
+### Options
+
+Following set of options are available with the program.
+
+#### required arguments:
+-q - multifasta amino acid file or genome acession number (NCBI only).
+
+-o - Output file name to create.
+
+-f - File type as 'multifasta' or 'accession'.
+
+#### optional arguments:
+
+-t - No. of CPU cores to use for performing blast. By default, uses all available cores.
+
+-e - Keep temporary and intermediate files for user analyses. Default set to 0.
+
+-v - Provide basic progress messages. Default set to 0.
+
+-vv -Provide detailed progress messages. Default set to 0.
 
 ### Output analysis
 In the default mode, the program provides a genome-wide list of genes (accession numbers) which are deemed horizontally acquired. Additionally, the program also predicts whether the horizontal gene transfer event was recent or ancient.

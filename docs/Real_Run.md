@@ -26,9 +26,28 @@ The output of the file looks like this:
 | --------- | --------- | ------ |
 | NC_004088 | 632       | 187410 |
 
-This file is imported by default into the program. A new file is to be generated whenever analyzing a new genome.
+This file is imported by default into the program. A new file must be generated whenever analyzing a new genome.
 
 ### MultiFASTA protein sequence file
+APP has the capability to input either a multiFASTA file or download the entire proteome of the genome of choice. 
+
+**Option 1:**
+In the former case, a file must be provided to the program specifying the type of input.
+
+`perl APP.pl -query example.fasta -f multifasta`
+
+**Option 2:**
+Alternatively, the user can supply the genome accession number as a command-line input.
+
+`perl APP.pl -query NC_004088 -f accession`
+
+Note that the input type has changed to `accession`. With the pre-installed NCBI eutilities, the program  will download the complete proteome accordinly.
+
+***Tips:***
+**Option 1** is directed when the user has a limited set of sequences to analyze, belonging to the same genome.
+
+**Option 2** is when the user wants to perform phyletic pattern analysis on an entire genome of interest.
+
 
 
 

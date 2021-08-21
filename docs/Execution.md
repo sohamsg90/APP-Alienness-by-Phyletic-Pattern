@@ -50,7 +50,7 @@ Note that the input type has changed to `accession`. With the help of pre-instal
 
 **Option 2** is when the user wants to perform phyletic pattern analysis on an entire genome of interest.
 
-### Execution
+## Execution
 To run the program, simply type in:
 
 `perl APP.pl -q <query> -f <fileType>`
@@ -78,11 +78,14 @@ Following set of options are available with the program.
 
 -vv -Provide detailed progress messages. Default set to 0.
 
-### Output analysis
+### Expected space requirements
+
+APP downloads genomes from NCBI ftp server in real-time. Henceforth, depending on the availability of completely sequenced genomes, and the abundance of genomes of the associated taxonomic ranks, the size of the downloaded database will vary, from genome to genome.
+
+
+## Output analysis
 In the default mode, the program provides a genome-wide list of genes (accession numbers) which are deemed horizontally acquired. Additionally, the program also predicts whether the horizontal gene transfer event was recent or ancient.
 
-
-Please proceed to the [Read_Run.md](https://github.com/sohamsg90/APP-Alienness-by-Phyletic-Pattern/blob/main/docs/Real_Run.md) for further detailed demonstration and analysis.
 
 
 

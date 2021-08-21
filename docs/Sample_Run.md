@@ -61,7 +61,7 @@ To run the program, simply type in:
 In the default mode, the program provides a genome-wide list of genes (accession numbers) which are deemed horizontally acquired. Additionally, the program also predicts whether the horizontal gene transfer event was recent or ancient.
 
 
-Please proceed to the [Read_Run.md](docs\Real_Run.md) for further detailed demonstration and analysis.
+Please proceed to the [Read_Run.md](https://github.com/sohamsg90/APP-Alienness-by-Phyletic-Pattern/blob/main/docs/Real_Run.md) for further detailed demonstration and analysis.
 
 
 

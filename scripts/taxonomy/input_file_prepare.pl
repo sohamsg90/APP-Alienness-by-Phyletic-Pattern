@@ -27,7 +27,7 @@ foreach my $l (@ncbi_taxids)
 				# print $l,"\n";
 				my @arr = split("\t", $l);
 				$taxid = $arr[0];
-				$speciesid = $arr[1];
+				$speciesid = $arr[7];
 				$FLAG = 1;
 			}
 		if ($FLAG == 1) {chomp $acc_nos[0];print OUT "$acc_nos[0]\t$speciesid\t$taxid\n";}

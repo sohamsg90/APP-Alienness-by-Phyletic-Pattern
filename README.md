@@ -9,4 +9,4 @@ APP, is a phyletic pattern analysis tool that uses comparative genomics to detec
 # Taxonomic database setup
 [Taxonomy.md](https://github.com/sohamsg90/APP-Alieness-by-Phyletic-Pattern/blob/main/docs/Taxonomy.md)
 # Tutorial
-[Real_Run.md](https://github.com/sohamsg90/APP-Alieness-by-Phyletic-Pattern/blob/main/docs/Real_Run.md)
+[Execution.md](https://github.com/sohamsg90/APP-Alieness-by-Phyletic-Pattern/blob/main/docs/Execution.md)

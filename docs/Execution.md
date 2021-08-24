@@ -69,9 +69,9 @@ Following set of options are available with the program.
 
 -t - No. of CPU cores to use for performing blast. By default, uses all available cores.
 
--e - Keep temporary and intermediate files for user analyses. Default set to 0.
+-e - turn on Expert option (1; keep temporary and intermediate files). Default set to 0. 
 
--v - Provide basic progress messages. Default set to 0.
+-v - Provide basic progress messages. Default set to 1.
 
 -vv -Provide detailed progress messages. Default set to 0.
 

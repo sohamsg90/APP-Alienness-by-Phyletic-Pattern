@@ -34,7 +34,6 @@ sh scripts/installation/setup_csvtk.sh
 sh scripts/installation/setup_NCBI_taxDump.sh
 ```
 
-
 If none of the dependencies have been previously installed, please run: 
 
 ```
@@ -44,5 +43,8 @@ sh scripts/installation/complete_setup.sh
 ```
 sudo chmod 777 $HOME/bin_APP/*
 ```
+## Set up taxonomic database for APP
 
+The last step of installation involves construction of one-time taxonomic database compatible with APP. This database is to be created only the first time while running APP. With newer updates of NCBI database, this script can be run again to create an updated taxonomic file. 
 
+Follow the steps as listed in [Taxonomy.md](https://github.com/sohamsg90/APP-Alieness-by-Phyletic-Pattern/blob/main/docs/Taxonomy.md) 

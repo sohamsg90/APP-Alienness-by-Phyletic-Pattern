@@ -1,5 +1,6 @@
 use strict;
-#use warnings;
+use warnings;
+
 
 my $f1 = $ARGV[0];
 if ($f1)

@@ -39,6 +39,13 @@ If none of the dependencies have been previously installed, please run:
 ```
 sh scripts/installation/complete_setup.sh
 ```
+## Perl dependencies
+
+```
+cpan App::cpanminus
+cpanm List::MoreUtils 
+```
+
 ## Set permission of files
 ```
 sudo chmod 777 $HOME/bin_APP/*

@@ -1,9 +1,6 @@
 
 # First sample run
 
-## Perl dependencies
- List::MoreUtils (https://metacpan.org/pod/List::MoreUtils)
-
 ## Sample run
 The associated dependencies of APP must be installed prior to attempt running the program. The details of these have been provided in [Installation.md](https://github.com/sohamsg90/APP-Alieness-by-Phyletic-Pattern/blob/main/docs/Installation.md). 
 
@@ -27,10 +24,10 @@ The output of the file looks like this:
 | --------- | --------- | ------ |
 | NC_004088 | 632       | 187410 |
 
-This file is imported by default into the program. A new file must be generated whenever analyzing a new genome.
+This file is imported by default into the program. A new file has to be generated whenever analyzing a new genome.
 
 ### MultiFASTA protein sequence file
-APP has the capability to input either a multiFASTA file or download the entire proteome of the genome of choice. 
+APP has the capability to take input either a multiFASTA file or download the entire proteome of the genome of choice. 
 
 **Option 1:**
 In the former case, a file must be provided to the program specifying the type of input.
@@ -48,7 +45,7 @@ Note that the input type has changed to `accession`. With the help of pre-instal
 
 **Option 1** is directed when the user has a limited set of sequences to analyze, belonging to the same genome.
 
-**Option 2** is when the user wants to perform phyletic pattern analysis on an entire genome of interest.
+**Option 2** is when the user wants to perform phyletic pattern analysis on an entire genome (proteome) of interest.
 
 ## Execution
 To run the program, simply type in:

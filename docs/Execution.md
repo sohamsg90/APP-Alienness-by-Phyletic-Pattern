@@ -50,7 +50,7 @@ Note that the input type has changed to `accession`. With the help of pre-instal
 ## Execution
 To run the program, simply type in:
 
-`perl APP.pl -q <query> -f <fileType>`
+`perl APP.pl -q <query fileName> -t <query taxonomy file> -o <Output fileName> -f <fileType> [Options]`
 
 ***Note:*** The main script file, query sequence file and taxonomic ID file must be placed in the same working directory.
 
@@ -61,13 +61,15 @@ Following set of options are available with the program.
 #### required arguments:
 -q - multifasta amino acid file or genome acession number (NCBI only).
 
+-t - query specific taxonomic id file.
+
 -o - Output file name to create.
 
 -f - File type as 'multifasta' or 'accession'.
 
 #### optional arguments:
 
--t - No. of CPU cores to use for performing blast. By default, uses all available cores.
+-n - No. of CPU cores to use for performing blast. By default, uses all available cores.
 
 -e - turn on Expert option (1; keep temporary and intermediate files). Default set to 0.
 

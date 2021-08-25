@@ -5,7 +5,7 @@ use warnings;
 my $f1 = $ARGV[0];
 if ($f1)
 	{
-		system(`sh extract_taxIDs.sh $f1`);
+		system(`sh scripts/taxonomy/extract_taxIDs.sh $f1`);
 	}
 else {print "\nUsage: perl 2.input_file_prep.pl acc_no.txt\n";}
 open IN, $f1 or die "\nNo input file provided\n";

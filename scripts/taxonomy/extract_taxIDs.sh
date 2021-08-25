@@ -12,11 +12,11 @@ cat $FILE | JoinIntoGroupsOf 5000 | xargs -n 1 sh -c \
 awk -F "\t" '{print $2}' $FILE\_taxID.txt > tax_ID_of_interest.txt
 rm $FILE\_taxID.txt
 
-taxonkit lineage tax_ID_of_interest.txt --data-dir /home/sohamsengupta/NCBI_taxonomy/taxdump > tax_ID_of_interest_lineage.txt
+taxonkit lineage tax_ID_of_interest.txt --data-dir $HOME/bin_APP/ > tax_ID_of_interest_lineage.txt
 
 ##For full names
 cat tax_ID_of_interest_lineage.txt \
-    | taxonkit reformat --data-dir /home/sohamsengupta/NCBI_taxonomy/taxdump -F  \
+    | taxonkit reformat --data-dir $HOME/bin_APP/ -F  \
     | csvtk -H -t cut -f 1,3 \
     | csvtk -H -t sep -f 2 -s ';' -R \
     | csvtk add-header -t -n taxid,kingdom,phylum,class,order,family,genus,species \
@@ -24,7 +24,7 @@ cat tax_ID_of_interest_lineage.txt \
 
 ##For numeric ID format
 cat tax_ID_of_interest_lineage.txt  \
-    | taxonkit reformat --data-dir /home/sohamsengupta/NCBI_taxonomy/taxdump -t  \
+    | taxonkit reformat --data-dir $HOME/bin_APP/ -t  \
     | csvtk -H -t cut -f 1,4 \
     | csvtk -H -t sep -f 2 -s ';' -R \
     | csvtk add-header -t -n taxid,kingdom,phylum,class,order,family,genus,species \

@@ -1,0 +1,15 @@
+# Detailed manual can be accessed From: https://www.nlm.nih.gov/dataguide/edirect/install.html
+
+To install EDirect, open your Unix terminal and execute the following commands. (The easiest way to do this is to copy the whole block and paste it directly into your terminal window.)
+
+cd ~
+/bin/bash
+perl -MNet::FTP -e \
+    '$ftp = new Net::FTP("ftp.ncbi.nlm.nih.gov", Passive => 1);
+    $ftp->login; $ftp->binary;
+    $ftp->get("/entrez/entrezdirect/edirect.tar.gz");'
+gunzip -c edirect.tar.gz | tar xf -
+rm edirect.tar.gz
+builtin exit
+export PATH=$PATH:$HOME/edirect >& /dev/null || setenv PATH "${PATH}:$HOME/edirect"
+./edirect/setup.sh

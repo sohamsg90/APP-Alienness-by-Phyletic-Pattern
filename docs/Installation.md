@@ -16,7 +16,7 @@ sh scripts/installation/setup_blast.sh
 
  2. Command-line NCBI Eutilities toolkit. If already installed, please ignore, else: 
  ```
-sh scripts/installation/setup_Eutilities.sh
+Copy & paste the script in scripts/installation/setup_Eutilities.txt
 ```
  
  3. Command-line TaxonKit NCBI Taxonomy toolkit. If already installed, please ignore, else: 

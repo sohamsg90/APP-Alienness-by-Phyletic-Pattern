@@ -35,7 +35,7 @@ In the former case, a file must be provided to the program specifying the type o
  `perl APP.pl -query example.fasta -f multifasta`
 
 **Option 2:**
-Alternatively, the user can supply the genome accession number as a command-line input.
+Alternatively, the user can supply the genome accession number (e.g. NC_004088) as a command-line input.
 
 `perl APP.pl -query NC_004088 -f accession`
 

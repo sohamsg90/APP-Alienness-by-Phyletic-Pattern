@@ -23,7 +23,10 @@ cat all_RefSeq_sequential_TAXIDS_lineage.txt  \
     | csvtk -H -t sep -f 2 -s ';' -R \
     | csvtk add-header -t -n taxid,kingdom,phylum,class,order,family,genus,species \
     | csvtk pretty -T > all_RefSeq_sequential_TAXIDS_lineage_byID.txt
-    
+
+#Remove  2nd line 
+sed -i '2d' all_RefSeq_sequential_TAXIDS_lineage_byID.txt
+
 ##Extract full name lineage using TaxonKit
 cat all_RefSeq_sequential_TAXIDS_lineage.txt  \
     | taxonkit reformat --data-dir $HOME/bin_APP/ -t  \
@@ -31,7 +34,10 @@ cat all_RefSeq_sequential_TAXIDS_lineage.txt  \
     | csvtk -H -t sep -f 2 -s ';' -R \
     | csvtk add-header -t -n taxid,kingdom,phylum,class,order,family,genus,species \
     | csvtk pretty -T > all_RefSeq_sequential_TAXIDS_lineage_byWord.txt
-    
+
+#Remove  2nd line 
+sed -i '2d' all_RefSeq_sequential_TAXIDS_lineage_byWord.txt
+
 ##Combine all files together
 paste -d "\t" all_RefSeq_sequential_TAXIDS_lineage_byWord.txt all_RefSeq_sequential_TAXIDS_lineage_byID.txt extracted_ftpdirpaths.txt > temp1.txt
 

@@ -22,19 +22,7 @@ cp names.dmp nodes.dmp delnodes.dmp merged.dmp $HOME/bin_APP/
 
 
 
-# ##Download the NCBI Eutilities toolkit. From: https://www.ncbi.nlm.nih.gov/books/NBK179288/
-# cd ~
-# /bin/bash
-# perl -MNet::FTP -e \
-# '$ftp = new Net::FTP("ftp.ncbi.nlm.nih.gov", Passive => 1);
-# $ftp->login; $ftp->binary;
-# $ftp->get("/entrez/entrezdirect/edirect.tar.gz");'
-# gunzip -c edirect.tar.gz | tar xf -
-# rm edirect.tar.gz
-# builtin exit
-# mkdir -p $HOME/bin_APP/edirect
-# export PATH=${PATH}:$HOME/bin_APP/edirect >& /dev/null || setenv PATH "${PATH}:$HOME/bin_APP/edirect"
-# ./edirect/setup.sh
+
 
 ##Download the command-line BLAST toolkit
 
@@ -43,6 +31,7 @@ tar -zxvf ncbi-blast-2.6.0+-x64-linux.tar.gz
 mkdir -p $HOME/bin_APP/blast
 cp ncbi-blast-2.6.0+/bin/* $HOME/bin_APP/blast
 
-
+# ##Download the NCBI Eutilities toolkit. From: https://www.ncbi.nlm.nih.gov/books/NBK179288/
+echo "For installation of NCBI Eutilities, please read and execute the code written in the file setup_Eutilites.txt "
 chmod 777 $HOME/bin_APP/*
 export PATH="$HOME/bin_APP:$PATH"

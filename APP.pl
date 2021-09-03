@@ -6,7 +6,6 @@
 ##Link to manual: https://github.com/sohamsg90
 
 use strict;
-use warnings;
 use Data::Dumper;
 use Getopt::Long;
 use List::MoreUtils qw(uniq);
@@ -103,18 +102,7 @@ unless ($param{threads})
   }
 print "\nTotal number of CPU cores detected: $num_threads\n" if ($verbose == 1);
 
-## Check expert option; Prevent from deleting temporary files ##
-if ($param{expert} == 0)
-  {
-    system("rm Error*.txt");
-    system("rm *.pdb *.phr *.pin *.pog *.pos *.pot *.psq *.ptf *.pto *.psi *.psd");
-    system("rm FOR_INPUT*");
-    system("rm *_raw_database.fasta");
-    system("rm *_Accession_no_*");
-    # system("rm ");
-    # system("rm ");
-    # system("rm ");
-  }
+
 
 ##### Main program #####
 
@@ -283,7 +271,7 @@ $species_ID = $arr2[0];
 $tax_ID = $arr2[1];
 print "\nExtracted speciesID and taxID for the genome....\n" if ($verboseDetailed == 1);
 
-##Subroutine selection for taxonomic level of choice
+#Subroutine selection for taxonomic level of choice
 if ($taxonomic_level_to_blast eq "species")	{my $level = "species"; my @ftp_links = species_level_blast($species_ID, $tax_ID, $level);}
 elsif ($taxonomic_level_to_blast eq "genus"){my $level = "genus"; my @ftp_links = genus_level_blast($species_ID, $tax_ID, $level);}
 elsif ($taxonomic_level_to_blast eq "family"){my $level = "family"; my @ftp_links = family_level_blast($species_ID, $tax_ID, $level);}
@@ -383,22 +371,35 @@ elsif ($taxonomic_level_to_blast eq "family")
 ###Alieness by phyletic pattern; Detect alien genes
 ##Import type 1 files with phyletic distribution values
 my $f10 = "$f4\_60_calculations_species\_1.txt";
-my $f11 = "$f4\_50_calculations_genus\_1.txt";
-my $f12 = "$f4\_25_calculations_family\_1.txt";
+my $f11 = "$f4\_50_calculations_genus_1.txt";
+my $f12 = "$f4\_25_calculations_family_1.txt";
 
 ##Import type 2 files with phyletic distribution values
-my $f14 = "$f4\_60_calculations_species\_2.txt";
-my $f15 = "$f4\_50_calculations_genus\_2.txt";
-my $f16 = "$f4\_25_calculations_family\_2.txt";
+my $f14 = "$f4\_60_calculations_species_2.txt";
+my $f15 = "$f4\_50_calculations_genus_2.txt";
+my $f16 = "$f4\_25_calculations_family_2.txt";
+
 
 print "\nFinding alien genes. Please wait....\n" if ($verbose == 1);
-alien_genes_finder($f10, $f11, $f12, $f14, $15, $16);
+alien_genes_finder();
 
 ##Program End; close FILEHANDLES ##
 close(IN); close(IN2); close(IN3);
 close(ERROR1);close(ERROR2);close(ERROR3);
 close(ERROR4);close(ERROR5);close(ERROR6);
 
+# Check expert option; Prevent from deleting temporary files ##
+if ($param{expert} == 0)
+  {
+    system("rm Error*.txt");
+    system("rm *.pdb *.phr *.pin *.pog *.pos *.pot *.psq *.ptf *.pto *.psi *.psd");
+    system("rm FOR_INPUT*");
+    system("rm *_raw_database.fasta");
+    system("rm *_Accession_no_*");
+    # system("rm ");
+    # system("rm ");
+    # system("rm ");
+  }
 
 #### Relevant subroutines ####
 ###All three levels of comparison performed. If no Family level database found, goes to Order level.
@@ -972,7 +973,7 @@ sub output_blasthit_processor
 				# chomp $l;
         print OUTPUT2 $l;
 			}
-    close(IN7); close(IN8); close(IN9);
+    close(IN7); close(IN8); close(IN9); close(OUTPUT2);
 	}
 
  sub taxonomic_level
@@ -991,24 +992,24 @@ sub output_blasthit_processor
 
 sub alien_genes_finder
   {
-    my ($a, $b, $c, $d, $e, $f) = @_;
-
-    my $f1 = $a; #Calculation phyletic distribution values: Species, Type1
+    # my ($a, $b, $c, $d, $e, $f) = @_;
+    # print Dumper \@_;
+    my $f1 = $f10; #Calculation phyletic distribution values: Species, Type1
     open IN11, $f1 or die;
     my @species_type1 =<IN11>;
-    my $f2 = $b; #Calculation phyletic distribution values: Genus, Type1
+    my $f2 = $f11; #Calculation phyletic distribution values: Genus, Type1
     open IN12, $f2 or die;
     my @genus_type1 = <IN12>;
-    my $f3 = $c; #Calculation phyletic distribution values: Family, Type1
+    my $f3 = $f12; #Calculation phyletic distribution values: Family, Type1
     open IN14, $f3 or die;
     my @family_type1 = <IN14>;
-    my $f4 = $d; #Calculation phyletic distribution values: Species, Type2
+    my $f4 = $f14; #Calculation phyletic distribution values: Species, Type2
     open IN15, $f4 or die;
     my @species_type2 =<IN15>;
-    my $f5 = $e; #Calculation phyletic distribution values: Genus, Type2
+    my $f5 = $f15; #Calculation phyletic distribution values: Genus, Type2
     open IN16, $f5 or die;
     my @genus_type2 = <IN16>;
-    my $f6 = $f; #Calculation phyletic distribution values: Family, Type2
+    my $f6 = $f16; #Calculation phyletic distribution values: Family, Type2
     open IN17, $f6 or die;
     my @family_type2 = <IN17>;
 

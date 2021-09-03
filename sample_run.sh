@@ -5,5 +5,5 @@
 
 #Then run
 cp database/1.REFSEQ_all_kingdoms_ftplinks_lineage.txt .
-perl APP.pl -q example/NC_004088.fa -t example/3.query_speciesID_taxID.txt -o NC_004088 -f multifasta
+perl APP.pl -q example/NC_004088.faa -t example/3.query_speciesID_taxID.txt -o NC_004088 -f multifasta
 

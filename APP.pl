@@ -30,7 +30,7 @@ GetOptions (
     'o|output_file=s'       => \$param{output_file},
     'n|threads=i'           => \$param{threads},
     'v|verbose=i'           => \$param{verbose},
-    'vv|verboseDetailed=i'  => \$param{verboseDetailed},
+    'd|verboseDetailed=i'  => \$param{verboseDetailed},
     'e|expert=i'            => \$param{expert},
     'h|help'                => \$param{help}
 );
@@ -436,7 +436,7 @@ sub all_level_blast
 		#####Species#####
     if ($type == 1)
       {
-          print "At species level (inclusion)\n" if ($verbose == 1);
+          print "\nAt species level (inclusion)\n" if ($verbose == 1);
           my %temp_array1 =  %{$global_taxonomyID_database{$kingdom}{$phylum}{$class}{$order}{$family}{$genus}{$species_under_consideration}[0]};
           my @keys1 = sort keys %temp_array1;
           my $MAIN_taxID_of_interest = join('',@keys1);
@@ -554,7 +554,7 @@ sub all_level_blast
     $type = 2; 
     if ($type == 2)
       {
-        print ERROR3 "At species level (exclusion)\n" if ($verbose == 1);
+        print "\nAt species level (exclusion)\n" if ($verbose == 1);
         my %temp_array1 =  %{$global_taxonomyID_database{$kingdom}{$phylum}{$class}{$order}{$family}{$genus}{$species_under_consideration}[0]};
         my @keys1 = sort keys %temp_array1;
         my $MAIN_taxID_of_interest = join('',@keys1);
@@ -577,7 +577,7 @@ sub all_level_blast
         download_links_blastp_all($type, $taxa_level_for_send1, $level2, $size_of_strain, %database_of_genomes_to_blast_against1);
 
         #####Genus#######
-        print ERROR3 "\nAt genus level (exclusion)\n" if ($verbose == 1);
+        print "\nAt genus level (exclusion)\n" if ($verbose == 1);
         my %temp_array2 =  %{$global_taxonomyID_database{$kingdom}{$phylum}{$class}{$order}{$family}{$genus_under_consideration}};
         my %database_of_genomes_to_blast_against2;
         foreach my $species (sort keys %temp_array2)
@@ -602,7 +602,7 @@ sub all_level_blast
         download_links_blastp_all($type, $taxa_level_for_send2, $level3, $size_of_genus, %database_of_genomes_to_blast_against2);
 
         #####Family######
-        print ERROR3 "\nAt family level (exclusion)\n" if ($verbose == 1);
+        print "\nAt family level (exclusion)\n" if ($verbose == 1);
         my %temp_array3 =  %{$global_taxonomyID_database{$kingdom}{$phylum}{$class}{$order}{$family_under_consideration}};
         my %database_of_genomes_to_blast_against3;
         foreach my $genus (sort keys %temp_array3)
@@ -638,8 +638,8 @@ sub all_level_blast
         else
           {
             ###Go to Order level only when no Family level database available
-            print ERROR3 "No family database found;hence going to order level\n";
-            print ERROR3 "\nAt order level\n";
+            print "No family database found;hence going to order level\n";
+            print "\nAt order level\n";
             my %temp_array4 =  %{$global_taxonomyID_database{$kingdom}{$phylum}{$class}{$order_under_consideration}};
             print ERROR4 "\nAt order level\n";
             my %database_of_genomes_to_blast_against4;
@@ -690,7 +690,7 @@ sub download_links_blastp_all
       my $size = $w;
       my %database_links = %z;
 
-      print $size,"\n";
+      # print $size,"\n";
       print ERROR3 "inside download: $level";
       my $count = 1;
       my $target_database_file = "$level\_$type\_raw_database.fasta";
@@ -706,9 +706,13 @@ sub download_links_blastp_all
       else
           {
               my $random_counter = 1;
+              print "\nDownloading $level level genomes. Please wait....\n" if ($verbose == 1);
+              print "\nTotal no. of genomes to download: $size \n" if ($verbose == 1);
+              # my $count_d = 1;
               foreach my $genome (sort keys %database_links)
                   {
                       chomp $genome;
+                      print "$random_counter of $size genomes downloaded\n" if ($verboseDetailed == 1);
                       my $link = $database_links{$genome};
                       chomp $link;
                       $genome =~ s/=| /_/g;#for blast database filename purposes
@@ -718,7 +722,6 @@ sub download_links_blastp_all
                       my @arr2 = split("/", $link);
                       my $file = $arr2[scalar(@arr2)-1]."_protein.faa.gz";
                       my $wget_link = $link."/".$file;
-                      print "\nDownloading genomes. Please wait....\n" if ($verbose == 1);
                       system (`wget -c -q $wget_link`);
                       if (-e $file)
                           {
@@ -771,7 +774,7 @@ sub download_links_blastp_all
               system(`cat *.faa > $level\_$type\_raw_database.fasta`);
               # system(`ls *.faa | wc -l`);
               system(`rm *.faa`);
-              print "\nDownloading genomes. Please wait....\n" if ($verbose == 1);
+              print "\nConstructing local blast database. Please wait....\n" if ($verbose == 1);
               system(`makeblastdb -in $level\_$type\_raw_database.fasta -parse_seqids -dbtype prot`);
               system(`blastp -num_threads $num_threads -query $f2 -db $level\_$type\_raw_database.fasta -out $f4\_$level\_$type\_output_blasthits -outfmt "6 qseqid sseqid pident qcovs length mismatch gapopen qstart qend sstart send evalue bitscore" -max_target_seqs $size`);
           }
@@ -1398,7 +1401,7 @@ optional arguments:
 
 -v - Provide basic progress messages. Default set to 1.
 
--vv - Provide detailed progress messages. Default set to 0.
+-d - Provide detailed progress messages. Default set to 0.
 
 example usage:
 1. Input multifasta file

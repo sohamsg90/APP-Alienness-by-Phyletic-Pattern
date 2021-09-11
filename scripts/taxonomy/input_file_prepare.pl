@@ -17,6 +17,7 @@ my @ncbi_taxids = <IN2>;
 
 open OUT, ">3.query_speciesID_taxID.txt";
 print OUT "Acc\tspecies\ttaxid\n";
+my $i = 0;
 foreach my $l (@ncbi_taxids)
 	{
 		chomp $l;
@@ -31,7 +32,7 @@ foreach my $l (@ncbi_taxids)
 				$speciesid = $arr[7];
 				$FLAG = 1;
 			}
-		if ($FLAG == 1) {chomp $acc_nos[0];print OUT "$acc_nos[0]\t$speciesid\t$taxid\n";}
+		if ($FLAG == 1) {chomp $acc_nos[$i];print OUT "$acc_nos[$i]\t$speciesid\t$taxid\n";$i++;}
 	}
 system(`rm tax_ID*`);
 

@@ -729,7 +729,7 @@ sub download_links_blastp_all
                           {
                               system (`mv $file temp.faa.gz`);
                               system (`gzip -d temp.faa.gz`);
-                              ###Following done to accomodate identical proteins in makeblastdv -parse_seqids scenario
+                              ###Following done to accomodate identical proteins in makeblastdb -parse_seqids scenario
                               if ($FLAG == 1)
                                   {
                                       open IN6, "temp.faa" or die;

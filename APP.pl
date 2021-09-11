@@ -278,6 +278,7 @@ elsif ($taxonomic_level_to_blast eq "family"){my $level = "family"; my @ftp_link
 elsif ($taxonomic_level_to_blast eq "all"){my $level = "all"; my @ftp_links = all_level_blast($species_ID, $tax_ID, $level);	}
 
 ###Blasthits output processing post BLASTP analysis
+my $FLAG_pdt = 0;
 if ($taxonomic_level_to_blast eq "all")
 	{
 		my $type = 1;
@@ -572,6 +573,7 @@ sub all_level_blast
         print ERROR3 Dumper \%database_of_genomes_to_blast_against1;
         my $size_of_strain = keys %database_of_genomes_to_blast_against1;
         print ERROR6 "$f4\t$size_of_strain";
+        if ($size_of_strain == 0) {$FLAG_pdt = 1;}
         my $taxa_level_for_send1 = $species_under_consideration."_".$taxa_under_consideration;
         my $level2 = "species";
         download_links_blastp_all($type, $taxa_level_for_send1, $level2, $size_of_strain, %database_of_genomes_to_blast_against1);
@@ -1145,12 +1147,24 @@ sub alien_genes_finder
             ##Decision rules; 
             #"type" => Native = 1; Alien = 0
             #"mode" => Ancient = 1; Recent = 0; Native = 2; Native values assigned to avoid error warning
-            if ($phyletic_distribution_threshold_species_type2 <= 30)
+            #"PDT_species_T1_or_T2" => When exlusion data is not available, type 1 data is used at species level
+            my $PDT_species_T1_or_T2;
+            if ($FLAG_pdt == 0)
+              {
+                print "\nNo exclusion data, using inclusion data for species level\n" if ($verbose == 1);
+                $PDT_species_T1_or_T2 = $phyletic_distribution_threshold_species_type1;
+              }
+            elsif ($FLAG_pdt == 1)
+              {
+                print "\nUsing exclusion data for species level\n" if ($verbose == 1);
+                $PDT_species_T1_or_T2 = $phyletic_distribution_threshold_species_type2;
+              }
+            if ($PDT_species_T1_or_T2 <= 30)
                 {
                   $final_native_alien_genes{$acc}{"type"} = 0;
                   $final_native_alien_genes{$acc}{"mode"} = 0;#Recent
                 }
-            elsif ($phyletic_distribution_threshold_species_type2 >= 80)
+            elsif ($PDT_species_T1_or_T2 >= 80)
                 {
                     if ($phyletic_distribution_threshold_genus_type2 >= 70)
                         {
@@ -1209,7 +1223,7 @@ sub alien_genes_finder
                                 }
                         }
                 }
-            elsif ($phyletic_distribution_threshold_species_type2 < 80 && $phyletic_distribution_threshold_species_type2 > 30)
+            elsif ($PDT_species_T1_or_T2 < 80 && $PDT_species_T1_or_T2 > 30)
                 {
                     if ($phyletic_distribution_threshold_genus_type1 <= 30)
                         {

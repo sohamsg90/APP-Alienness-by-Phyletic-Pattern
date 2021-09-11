@@ -1313,6 +1313,7 @@ sub process_fasta
                     my @arr1 = split(">", $_);
                     my @arr2 = split(/(\]\ \[)/, $arr1[1]);
                     my $FLAG = 0;
+                    my $real_header = $_; #for default headers
                     foreach my $key (@arr2)
                         {
                             chomp $key;
@@ -1330,8 +1331,9 @@ sub process_fasta
                         }
                     if ($FLAG == 0)
                                 {
-                                    my @arr3 = split(/\./, $fna);
-                                    my $fname = $arr3[0];
+                                    chomp $real_header;
+                                    my @arr3 = split(">", $real_header);
+                                    my $fname = $arr3[1];
                                     my $new_header = $fname.":g".$random_counter;#for blast database filename purposes
                                     print TEMPOUT ">$new_header\n";
                                 }

@@ -272,13 +272,14 @@ $tax_ID = $arr2[1];
 print "\nExtracted speciesID and taxID for the genome....\n" if ($verboseDetailed == 1);
 
 #Subroutine selection for taxonomic level of choice
+my $FLAG_pdt = 0;
 if ($taxonomic_level_to_blast eq "species")	{my $level = "species"; my @ftp_links = species_level_blast($species_ID, $tax_ID, $level);}
 elsif ($taxonomic_level_to_blast eq "genus"){my $level = "genus"; my @ftp_links = genus_level_blast($species_ID, $tax_ID, $level);}
 elsif ($taxonomic_level_to_blast eq "family"){my $level = "family"; my @ftp_links = family_level_blast($species_ID, $tax_ID, $level);}
 elsif ($taxonomic_level_to_blast eq "all"){my $level = "all"; my @ftp_links = all_level_blast($species_ID, $tax_ID, $level);	}
 
 ###Blasthits output processing post BLASTP analysis
-my $FLAG_pdt = 0;
+# $FLAG_pdt = 1;
 if ($taxonomic_level_to_blast eq "all")
 	{
 		my $type = 1;
@@ -293,19 +294,23 @@ if ($taxonomic_level_to_blast eq "all")
         my $threshold_pident_genus = 50; 
         my $threshold_pident_family = 25; 
         # my $threshold_pident_order = 25; my $cluster_separation_threshold_order = 15;#Values not checked
-        if (-e $input_blasthit_species) {print "Species level hits exists\n";} else {print "Species level hits doesn't exists or file not found\n";}
-        if (-e $input_blasthit_genus) {print "Genus level hits exists\n";} else {print "Genus level hits doesn't existsor file not found\n";}
-        if (-e $input_blasthit_family) {print "Family level hits exists\n";} else {print "Family level hits doesn't existsor file not found\n";}
+        if (-e $input_blasthit_species) {print "Species level hits exists\n";} else {print "Type 1 (inclusion) Species level hits doesn't exists or file not found\n";}
+        if (-e $input_blasthit_genus) {print "Genus level hits exists\n";} else {print "Type 1 (inclusion) Genus level hits doesn't existsor file not found\n";}
+        if (-e $input_blasthit_family) {print "Family level hits exists\n";} else {print "Type 1 (inclusion) Family level hits doesn't existsor file not found\n";}
         # if (-e $input_blasthit_order) {print "Order level hits exists\n";} else {print "Order level hits doesn't exists\n";}
         my $f6 = "species_$type\_Accession_no_species.txt";
         my $f7 = "genus_$type\_Accession_no_species.txt";
         my $f8 = "family_$type\_Accession_no_species.txt";
         # my $f9 = "order_Accession_no_species.txt";
-        print "\nProcessing BLAST hits of species level. Please wait....\n" if ($verbose == 1);
-        output_blasthit_processor($type, $input_blasthit_species, $f6, $threshold_pident_species,  $f2, $f4);
-        print "\nProcessing BLAST hits of genus level. Please wait....\n" if ($verbose == 1);
+        
+        if ($FLAG_pdt == 1)
+          {
+            print "\nProcessing BLAST hits of species level of Type 1 (inclusion). Please wait....\n" if ($verbose == 1);
+            output_blasthit_processor($type, $input_blasthit_species, $f6, $threshold_pident_species,  $f2, $f4);
+          }
+        print "\nProcessing BLAST hits of genus level of Type 1 (inclusion). Please wait....\n" if ($verbose == 1);
         output_blasthit_processor($type, $input_blasthit_genus, $f7, $threshold_pident_genus, $f2, $f4);
-        print "\nProcessing BLAST hits of family level. Please wait....\n" if ($verbose == 1);
+        print "\nProcessing BLAST hits of family level of Type 1 (inclusion). Please wait....\n" if ($verbose == 1);
         output_blasthit_processor($type, $input_blasthit_family, $f8, $threshold_pident_family, $f2, $f4);
         # output_blasthit_processor($input_blasthit_order, $f9, $threshold_pident_order, $cluster_separation_threshold_order, $f2);
       }
@@ -321,19 +326,22 @@ if ($taxonomic_level_to_blast eq "all")
         my $threshold_pident_genus = 50; 
         my $threshold_pident_family = 25; 
         # my $threshold_pident_order = 25; my $cluster_separation_threshold_order = 15;#Values not checked
-        if (-e $input_blasthit_species) {print "Species level hits exists\n";} else {print "Species level hits doesn't exists or file not found\n";}
-        if (-e $input_blasthit_genus) {print "Genus level hits exists\n";} else {print "Genus level hits doesn't existsor file not found\n";}
-        if (-e $input_blasthit_family) {print "Family level hits exists\n";} else {print "Family level hits doesn't existsor file not found\n";}
+        if (-e $input_blasthit_species) {print "Species level hits exists\n";} else {print "Type 2 (exclusion) Species level hits doesn't exists or file not found\n";}
+        if (-e $input_blasthit_genus) {print "Genus level hits exists\n";} else {print "Type 2 (exclusion) Genus level hits doesn't existsor file not found\n";}
+        if (-e $input_blasthit_family) {print "Family level hits exists\n";} else {print "Type 2 (exclusion) Family level hits doesn't existsor file not found\n";}
         # if (-e $input_blasthit_order) {print "Order level hits exists\n";} else {print "Order level hits doesn't exists\n";}
         my $f6 = "species_$type\_Accession_no_species.txt";
         my $f7 = "genus_$type\_Accession_no_species.txt";
         my $f8 = "family_$type\_Accession_no_species.txt";
         # my $f9 = "order_Accession_no_species.txt";
-        print "\nProcessing BLAST hits of species level. Please wait....\n" if ($verbose == 1);
-        output_blasthit_processor($type, $input_blasthit_species, $f6, $threshold_pident_species, $f2, $f4);
-        print "\nProcessing BLAST hits of genus level. Please wait....\n" if ($verbose == 1);
+        if ($FLAG_pdt == 0)
+          {
+            print "\nProcessing BLAST hits of species level of Type 2 (exclusion). Please wait....\n" if ($verbose == 1);
+            output_blasthit_processor($type, $input_blasthit_species, $f6, $threshold_pident_species, $f2, $f4);
+          }
+        print "\nProcessing BLAST hits of genus level of Type 2 (exclusion). Please wait....\n" if ($verbose == 1);
         output_blasthit_processor($type, $input_blasthit_genus, $f7, $threshold_pident_genus, $f2, $f4);
-        print "\nProcessing BLAST hits of family level. Please wait....\n" if ($verbose == 1);
+        print "\nProcessing BLAST hits of family level of Type 2 (exclusion). Please wait....\n" if ($verbose == 1);
         output_blasthit_processor($type, $input_blasthit_family, $f8, $threshold_pident_family, $f2, $f4);
         # output_blasthit_processor($input_blasthit_order, $f9, $threshold_pident_order, $cluster_separation_threshold_order, $f2);
       }
@@ -456,7 +464,12 @@ sub all_level_blast
           print ERROR6 "$f4\t$size_of_strain";
           my $taxa_level_for_send1 = $species_under_consideration."_".$taxa_under_consideration;
           my $level2 = "species";
-          download_links_blastp_all($type, $taxa_level_for_send1, $level2, $size_of_strain, %database_of_genomes_to_blast_against1);
+          if ($size_of_strain >= 1)
+            {
+              download_links_blastp_all($type, $taxa_level_for_send1, $level2, $size_of_strain, %database_of_genomes_to_blast_against1);
+            }
+          else {print "\nBlast not performed at species level (inclusion)\n" if ($verbose == 1);}
+          
 
           #####Genus#######
           print "\nAt genus level (inclusion)\n" if ($verbose == 1);
@@ -479,7 +492,11 @@ sub all_level_blast
           print ERROR6 "\t$size_of_genus";
           my $taxa_level_for_send2 = $genus_under_consideration."_".$species_under_consideration."_".$taxa_under_consideration;
           my $level3 = "genus";
-          download_links_blastp_all($type, $taxa_level_for_send2, $level3, $size_of_genus, %database_of_genomes_to_blast_against2);
+          if ($size_of_genus >= 1)
+            {
+              download_links_blastp_all($type, $taxa_level_for_send2, $level3, $size_of_genus, %database_of_genomes_to_blast_against2);
+            }
+          else {print "\nBlast not performed at genus level (inclusion)\n" if ($verbose == 1);}
 
           #####Family######
           print "\nAt family level (inclusion)\n" if ($verbose == 1);
@@ -576,7 +593,11 @@ sub all_level_blast
         if ($size_of_strain == 0) {$FLAG_pdt = 1;}
         my $taxa_level_for_send1 = $species_under_consideration."_".$taxa_under_consideration;
         my $level2 = "species";
-        download_links_blastp_all($type, $taxa_level_for_send1, $level2, $size_of_strain, %database_of_genomes_to_blast_against1);
+        if ($size_of_strain >= 1)
+          {
+            download_links_blastp_all($type, $taxa_level_for_send1, $level2, $size_of_strain, %database_of_genomes_to_blast_against1);
+          }
+        else {print "\nBlast not performed at species level (exclusion)\n" if ($verbose == 1);}
 
         #####Genus#######
         print "\nAt genus level (exclusion)\n" if ($verbose == 1);
@@ -601,7 +622,11 @@ sub all_level_blast
         print ERROR6 "\t$size_of_genus";
         my $taxa_level_for_send2 = $genus_under_consideration."_".$species_under_consideration."_".$taxa_under_consideration;
         my $level3 = "genus";
-        download_links_blastp_all($type, $taxa_level_for_send2, $level3, $size_of_genus, %database_of_genomes_to_blast_against2);
+        if ($size_of_genus >= 1)
+          {
+            download_links_blastp_all($type, $taxa_level_for_send2, $level3, $size_of_genus, %database_of_genomes_to_blast_against2);
+          }
+        else {print "\nBlast not performed at genus level (exclusion)\n" if ($verbose == 1);}
 
         #####Family######
         print "\nAt family level (exclusion)\n" if ($verbose == 1);
@@ -778,6 +803,7 @@ sub download_links_blastp_all
               system(`rm *.faa`);
               print "\nConstructing local blast database. Please wait....\n" if ($verbose == 1);
               system(`makeblastdb -in $level\_$type\_raw_database.fasta -parse_seqids -dbtype prot`);
+              print "\nLocal blast database generated. Performing BLAST. Please wait....\n" if ($verbose == 1);
               system(`blastp -num_threads $num_threads -query $f2 -db $level\_$type\_raw_database.fasta -out $f4\_$level\_$type\_output_blasthits -outfmt "6 qseqid sseqid pident qcovs length mismatch gapopen qstart qend sstart send evalue bitscore" -max_target_seqs $size`);
           }
       # system (`mkdir $f4\_main_output_blasthits_folder\_$level`);
@@ -999,18 +1025,58 @@ sub alien_genes_finder
   {
     # my ($a, $b, $c, $d, $e, $f) = @_;
     # print Dumper \@_;
-    my $f1 = $f10; #Calculation phyletic distribution values: Species, Type1
-    open IN11, $f1 or die;
-    my @species_type1 =<IN11>;
+
+    #Calculation phyletic distribution values: Species, Type1
+    my %species_level_type1;
+    if ($FLAG_pdt == 1)
+      {
+        my $f1 = $f10; 
+        open IN11, $f1 or die;
+        my @species_type1 =<IN11>;
+        foreach my $line2 (@species_type1)
+        {
+            chomp $line2;
+            next if $line2 =~ /^Gene/;
+            my @arr2 = split("\t", $line2);
+            my $acc = $arr2[0];
+            my $phyletic_distribution_threshold = $arr2[3];
+            my $type = $arr2[4];
+            chomp ($acc, $phyletic_distribution_threshold, $type);
+            $species_level_type1{$acc}{"phyletic_distribution_threshold"} = $phyletic_distribution_threshold;
+            # $species_level_type1{$acc}{"type"} = $type;
+
+        }
+      }
+    
     my $f2 = $f11; #Calculation phyletic distribution values: Genus, Type1
     open IN12, $f2 or die;
     my @genus_type1 = <IN12>;
     my $f3 = $f12; #Calculation phyletic distribution values: Family, Type1
     open IN14, $f3 or die;
     my @family_type1 = <IN14>;
-    my $f4 = $f14; #Calculation phyletic distribution values: Species, Type2
-    open IN15, $f4 or die;
-    my @species_type2 =<IN15>;
+
+    #Calculation phyletic distribution values: Species, Type2
+    my %species_level_type2;
+    if ($FLAG_pdt == 0)
+      {
+        my $f4 = $f14;
+        open IN15, $f4 or die;
+        my @species_type2 =<IN15>;
+        
+        foreach my $line2 (@species_type2)
+            {
+                chomp $line2;
+                next if $line2 =~ /^Gene/;
+                my @arr2 = split("\t", $line2);
+                my $acc = $arr2[0];
+                my $phyletic_distribution_threshold = $arr2[3];
+                my $type = $arr2[4];
+                chomp ($acc, $phyletic_distribution_threshold, $type);
+                $species_level_type2{$acc}{"phyletic_distribution_threshold"} = $phyletic_distribution_threshold;
+                # $species_level_type2{$acc}{"type"} = $type;
+
+            }
+      }
     my $f5 = $f15; #Calculation phyletic distribution values: Genus, Type2
     open IN16, $f5 or die;
     my @genus_type2 = <IN16>;
@@ -1037,21 +1103,8 @@ sub alien_genes_finder
     # open OUTPUT11, ">$f4\_phyletic_pattern_analysis_native_aliene_genes_$phyletic_distribution_threshold_native\_$phyletic_distribution_threshold_alien.txt";
     open OUTPUT11, ">$f4\_phyletic_pattern_analysis_native_alien_genes_full_record.txt";
     open OUTPUT12, ">$f4\_APP_Alien_genes.txt";
+    
     ####Type1 data
-    my %species_level_type1;
-    foreach my $line2 (@species_type1)
-        {
-            chomp $line2;
-            next if $line2 =~ /^Gene/;
-            my @arr2 = split("\t", $line2);
-            my $acc = $arr2[0];
-            my $phyletic_distribution_threshold = $arr2[3];
-            my $type = $arr2[4];
-            chomp ($acc, $phyletic_distribution_threshold, $type);
-            $species_level_type1{$acc}{"phyletic_distribution_threshold"} = $phyletic_distribution_threshold;
-            # $species_level_type1{$acc}{"type"} = $type;
-
-        }
     # print OUTPUT11 Dumper \%species_level;
     my %genus_level_type1;
     foreach my $line2 (@genus_type1)
@@ -1083,20 +1136,7 @@ sub alien_genes_finder
 
         }
     #Type2 data  
-    my %species_level_type2;
-    foreach my $line2 (@species_type2)
-        {
-            chomp $line2;
-            next if $line2 =~ /^Gene/;
-            my @arr2 = split("\t", $line2);
-            my $acc = $arr2[0];
-            my $phyletic_distribution_threshold = $arr2[3];
-            my $type = $arr2[4];
-            chomp ($acc, $phyletic_distribution_threshold, $type);
-            $species_level_type2{$acc}{"phyletic_distribution_threshold"} = $phyletic_distribution_threshold;
-            # $species_level_type2{$acc}{"type"} = $type;
-
-        }
+    
     # print OUTPUT11 Dumper \%species_level_type2;
     my %genus_level_type2;
     foreach my $line2 (@genus_type2)
@@ -1127,8 +1167,11 @@ sub alien_genes_finder
             # $family_level_type2{$acc}{"type"} = $type;
 
         }                    
-    my %final_native_alien_genes;    
-    foreach my $acc (sort keys %species_level_type2)
+    my %final_native_alien_genes;  
+    my %species_level_data;
+    if ($FLAG_pdt == 0) {%species_level_data = %species_level_type2;}
+    elsif($FLAG_pdt == 1) {%species_level_data = %species_level_type1;}
+    foreach my $acc (sort keys %species_level_data)
         {
             chomp $acc;
 
@@ -1141,20 +1184,20 @@ sub alien_genes_finder
             my $phyletic_distribution_threshold_species_type2 = $species_level_type2{$acc}{"phyletic_distribution_threshold"};
             my $phyletic_distribution_threshold_genus_type2 = $genus_level_type2{$acc}{"phyletic_distribution_threshold"};
             my $phyletic_distribution_threshold_family_type2 = $family_level_type2{$acc}{"phyletic_distribution_threshold"};
-            # print OUTPUT11 "$phyletic_distribution_threshold_species_type1\t$phyletic_distribution_threshold_genus_type1\t$phyletic_distribution_threshold_family_type1\t
-            #$phyletic_distribution_threshold_species_type2\t$phyletic_distribution_threshold_genus_type2\t$phyletic_distribution_threshold_family_type2\n";
+            # print "$phyletic_distribution_threshold_species_type1\t$phyletic_distribution_threshold_genus_type1\t$phyletic_distribution_threshold_family_type1\t
+            # $phyletic_distribution_threshold_species_type2\t$phyletic_distribution_threshold_genus_type2\t$phyletic_distribution_threshold_family_type2\n";
 
             ##Decision rules; 
             #"type" => Native = 1; Alien = 0
             #"mode" => Ancient = 1; Recent = 0; Native = 2; Native values assigned to avoid error warning
             #"PDT_species_T1_or_T2" => When exlusion data is not available, type 1 data is used at species level
             my $PDT_species_T1_or_T2;
-            if ($FLAG_pdt == 0)
+            if ($FLAG_pdt == 1)
               {
                 print "\nNo exclusion data, using inclusion data for species level\n" if ($verbose == 1);
                 $PDT_species_T1_or_T2 = $phyletic_distribution_threshold_species_type1;
               }
-            elsif ($FLAG_pdt == 1)
+            elsif ($FLAG_pdt == 0)
               {
                 print "\nUsing exclusion data for species level\n" if ($verbose == 1);
                 $PDT_species_T1_or_T2 = $phyletic_distribution_threshold_species_type2;

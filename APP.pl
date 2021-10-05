@@ -11,28 +11,30 @@ use Getopt::Long;
 use List::MoreUtils qw(uniq);
 ### Get my parameters for program ###
 my %param = (
-    query           => undef,
-    taxonomyFile    => undef,
-    fileType        => undef,
-    output_file     => undef,
-    threads         => 0,
-    verbose         => 1,
-    verboseDetailed => 0,
-    expert          => 0,
-    help            => undef
+    query                 => undef,
+    taxonomyFile          => undef,
+    fileType              => undef,
+    output_file           => undef,
+    threads               => 0,
+    markerGeneEnrichment  => 0,
+    verbose               => 1,
+    verboseDetailed       => 0,
+    expert                => 0,
+    help                  => undef
 );
 
 Getopt::Long::Configure('bundling');#https://perldoc.perl.org/Getopt::Long
 GetOptions (
-    'q|query=s'             => \$param{query},
-    't|taxonomyFile=s'      => \$param{taxonomyFile},
-    'f|fileType=s'          => \$param{fileType},
-    'o|output_file=s'       => \$param{output_file},
-    'n|threads=i'           => \$param{threads},
-    'v|verbose=i'           => \$param{verbose},
-    'd|verboseDetailed=i'  => \$param{verboseDetailed},
-    'e|expert=i'            => \$param{expert},
-    'h|help'                => \$param{help}
+    'q|query=s'                => \$param{query},
+    't|taxonomyFile=s'         => \$param{taxonomyFile},
+    'f|fileType=s'             => \$param{fileType},
+    'o|output_file=s'          => \$param{output_file},
+    'n|threads=i'              => \$param{threads},
+    'm|markerGeneEnrichment=i' => \$param{markerGeneEnrichment},
+    'v|verbose=i'              => \$param{verbose},
+    'd|verboseDetailed=i'      => \$param{verboseDetailed},
+    'e|expert=i'               => \$param{expert},
+    'h|help'                   => \$param{help}
 );
 ### Validate input parameters ###
 ## print user manual ##
@@ -102,7 +104,12 @@ unless ($param{threads})
   }
 print "\nTotal number of CPU cores detected: $num_threads\n" if ($verbose == 1);
 
-
+## check if marker gene enrichment is enabled
+my $FLAG_markerGeneEnrichment = 0;#Marker gene enrichment is by user choice. By default set to 0
+if ($param{markerGeneEnrichment} == 1)
+  {
+    $FLAG_markerGeneEnrichment = 1;
+  }
 
 ##### Main program #####
 
@@ -391,6 +398,14 @@ my $f16 = "$f4\_25_calculations_family_2.txt";
 
 print "\nFinding alien genes. Please wait....\n" if ($verbose == 1);
 alien_genes_finder();
+
+###Perform maker gene enrichment if user wants
+print "\nFinding marker genes. Please wait....\n" if ($FLAG_markerGeneEnrichment == 1);
+if ($FLAG_markerGeneEnrichment == 1)
+  {
+    marker_gene_enrichment();
+  }
+
 
 ##Program End; close FILEHANDLES ##
 close(IN); close(IN2); close(IN3);
@@ -1348,6 +1363,133 @@ sub alien_genes_finder
     close(OUTPUT12);
   }
 
+sub marker_gene_enrichment 
+    {
+        my $file1 = "$f4\_APP_Alien_genes.txt";
+        open IN19, $file1 or die;
+        my @alien_genes = <IN19>;
+        # print Dumper \@alien_genes;
+
+        my $file2 = glob("*.modified");
+        open IN20, $file2 or die;
+        my @all_genes = <IN20>;
+        # print Dumper \@all_genes;
+        # open OUTPUT14, ">FOR_INPUT_all_gene_sequence.fa" or die;
+
+        my $total_genes_across_whole_genome = 0;
+        my @all_gene_list_enrichment;
+        for(my $i = 0; $i <= scalar(@all_genes)-2; $i = $i + 2)
+            {
+                my $l1 = $all_genes[$i];
+                my @arr1 = split(">", $l1);
+                my $header = $arr1[1];
+                chomp $header;
+                push (@all_gene_list_enrichment, $header);
+                # my $seq = $all_genes[$i+1];
+                # chomp $seq;
+                # $gene_database{$header} = $seq;
+                $total_genes_across_whole_genome++;
+            }
+        # print Dumper \%gene_database;
+        
+        my $total_alien_genes = 0;
+        my @alien_gene_list_enrichment;
+        foreach my $g (@alien_genes)    
+            {
+                chomp $g;
+                my @arr = split("\t", $g);
+                my $gene = $arr[0];
+                # print $gene,"\n";
+                # print OUTPUT14 ">$gene\n";
+                push(@alien_gene_list_enrichment, $gene);
+                # my $seq = $gene_database{$gene};
+                # print $seq,"\n";
+                # print OUTPUT14 "$seq\n";
+                $total_alien_genes++;
+            }
+        print $total_alien_genes,"\n";
+        print $total_genes_across_whole_genome,"\n";    
+        print "\nPerforming HMMSCAN. Please wait....\n" if ($FLAG_markerGeneEnrichment == 1);    
+        # system (`hmmscan -o $f4\:hmm.txt --tblout $f4\:table.txt reserve/cafe_database_table $file2`);
+        my $file3 = glob("*table.txt");
+        open IN21, $file3 or die;
+        my @hmmscan_data = <IN21>;
+        open OUTPUT15, ">$f4\_marker_genes.txt";
+        open OUTPUT16, ">$f4\_marker_enrichment_statistics.txt";
+        print "\nExtracting marker genes. Please wait....\n" if ($FLAG_markerGeneEnrichment == 1);   
+        my $total_marker_gene_count = 0;
+        my @marker_gene_list_enrichment;
+        for (my $i = 0; $i < scalar(@hmmscan_data); $i++)
+            {
+                chomp $hmmscan_data[$i];
+                next if $hmmscan_data[$i] =~ /^#/;
+                my @arr2 = split('\s+', $hmmscan_data[$i]);
+                my $gene_accession = $arr2[2];
+                my $evalue = $arr2[4];
+                my $gene_description = join(' ', @arr2[18..$#arr2]);
+                my @arr3 = split ('\s+', $hmmscan_data[$i-1]);
+                my $gene_accession1 = $arr3[2];
+                next if ($gene_accession eq $gene_accession1 && defined($gene_accession1));
+                if ($evalue < 0.05)
+                    {
+                        $total_marker_gene_count++;
+                        print OUTPUT15 $gene_accession, "\n";
+                        push (@marker_gene_list_enrichment, $gene_accession);
+                    }
+                # else {print $evalue,"\n";}
+
+            }
+        print "\nPerforming enrichment. Please wait ....\n" if ($FLAG_markerGeneEnrichment == 1);   
+        my @union; my @isect; 
+        my %union; my %isect;
+        foreach my $a_gene (@alien_gene_list_enrichment)
+            {
+                $union{$a_gene} = 1;
+            }
+        foreach my $m_gene (@marker_gene_list_enrichment)
+            {
+                if ($union{$m_gene})
+                    {
+                        $isect{$m_gene} = 1;
+                    }
+                $union{$m_gene} = 1;
+            }
+        my $count_marker_genes_also_marked_alien_by_APP = keys %isect;
+        print OUTPUT16 "Out of $total_genes_across_whole_genome genes in the genome, we found $total_marker_gene_count marker genes. APP identified $total_alien_genes genes as of alien origin. Out of $total_alien_genes alien genes, $count_marker_genes_also_marked_alien_by_APP were found to be marker genes.\n";
+        my $overlap = $count_marker_genes_also_marked_alien_by_APP;#overlap of set 1 & 2
+        my $total = $total_genes_across_whole_genome;#Total no of genes in genome
+        my $m = $total_alien_genes;#set 1; no. of alien genes
+        my $n = $total - $m;#Total genes - set 1
+        my $k = $total_marker_gene_count;#set 2; no. of marker genes across entiregenome
+        my $expected_no_of_genes = ($m)*($k/$total);
+        my $enrichment = $overlap/$expected_no_of_genes;
+        my $x;#overlap calculation for phyper formulae 
+        if ($overlap < $expected_no_of_genes)
+            {
+                $x = $overlap;
+            }
+        elsif ($overlap > $expected_no_of_genes)
+            {
+                $x = $overlap-1;
+            }
+        my $R = Statistics::R->new();
+        $R->run( qq`x = phyper($x,$m,$n,$k, lower.tail=FALSE)` );
+        my $squares = $R->get('x');
+        print OUTPUT16 "Enrichment = $enrichment\n";
+        if ($squares > 0.5)
+            {
+                my $sig = 1 - $squares;
+                print OUTPUT16 "p-value = $sig\n";
+                
+            }
+        else 
+            {
+                print OUTPUT16 "p-value = ", $squares,"\n";
+            }
+        close(IN19); close(IN20); 
+        close(OUTPUT15); close(OUTPUT16);
+    }
+
 sub process_fasta
   {
     # print "process fasta\n";
@@ -1365,6 +1507,7 @@ sub process_fasta
         {
             if (/^>/)
                 {
+                    if ($random_counter > 0) {print TEMPOUT "\n"};
                     $random_counter++;
                     $_ =~ s/(-->)|(->)//g;
                     my @arr1 = split(">", $_);
@@ -1397,6 +1540,7 @@ sub process_fasta
                 }
                 else
                   {
+                      chomp $_;
                       print TEMPOUT $_;
                   }
         }
@@ -1456,6 +1600,8 @@ optional arguments:
 
 -n - No. of CPU cores to use for performing blast. By default, uses all available cores.
 
+-m - Marker gene enrichment. Default set to 0. Use 1 only when whole genome is analyzed.
+
 -e - turn on Expert option (1; keep temporary and intermediate files). Default set to 0. 
 
 -v - Provide basic progress messages. Default set to 1.
@@ -1467,5 +1613,7 @@ example usage:
   perl APP.pl -q example/NC_004088.faa -t 3.query_speciesID_taxID.txt -o NC_004088 -f multifasta
 2. Accession number of genomes
   perl APP.pl -q NC_004088 -t 3.query_speciesID_taxID.txt -o NC_004088 -f accession
+3. Input multifasta file with marker gene enrichment
+  perl APP.pl -q example/NC_004088.faa -t 3.query_speciesID_taxID.txt -o NC_004088 -f multifasta -m 1
 BLOCK
 }

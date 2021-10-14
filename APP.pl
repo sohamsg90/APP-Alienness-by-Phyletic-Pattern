@@ -17,6 +17,7 @@ my %param = (
     output_file           => undef,
     threads               => 0,
     markerGeneEnrichment  => 0,
+    generateGeneMap      => 0,
     verbose               => 1,
     verboseDetailed       => 0,
     expert                => 0,
@@ -31,6 +32,7 @@ GetOptions (
     'o|output_file=s'          => \$param{output_file},
     'n|threads=i'              => \$param{threads},
     'm|markerGeneEnrichment=i' => \$param{markerGeneEnrichment},
+    'g|generateGeneMap=i'      => \$param{generateGeneMap},
     'v|verbose=i'              => \$param{verbose},
     'd|verboseDetailed=i'      => \$param{verboseDetailed},
     'e|expert=i'               => \$param{expert},
@@ -110,7 +112,12 @@ if ($param{markerGeneEnrichment} == 1)
   {
     $FLAG_markerGeneEnrichment = 1;
   }
-
+## check if gene map is enabled
+my $FLAG_generateGeneMap = 0;
+if ($param{generateGeneMaps} == 1)
+  {
+    $FLAG_generateGeneMap = 1;
+  }
 ##### Main program #####
 
 ### Default input files ###
@@ -406,7 +413,12 @@ if ($FLAG_markerGeneEnrichment == 1)
     marker_gene_enrichment();
   }
 
-
+###Generate gene maps
+print "\nGenerating gene map using CGViewer. Please wait ...\n" if ($FLAG_generateGeneMap == 1);
+if ($FLAG_generateGeneMap == 1)
+  {
+    get_genbank();
+  }
 ##Program End; close FILEHANDLES ##
 close(IN); close(IN2); close(IN3);
 close(ERROR1);close(ERROR2);close(ERROR3);
@@ -1364,131 +1376,302 @@ sub alien_genes_finder
   }
 
 sub marker_gene_enrichment 
-    {
-        my $file1 = "$f4\_APP_Alien_genes.txt";
-        open IN19, $file1 or die;
-        my @alien_genes = <IN19>;
-        # print Dumper \@alien_genes;
+  {
+      my $file1 = "$f4\_APP_Alien_genes.txt";
+      open IN19, $file1 or die;
+      my @alien_genes = <IN19>;
+      # print Dumper \@alien_genes;
 
-        my $file2 = glob("*.modified");
-        open IN20, $file2 or die;
-        my @all_genes = <IN20>;
-        # print Dumper \@all_genes;
-        # open OUTPUT14, ">FOR_INPUT_all_gene_sequence.fa" or die;
+      my $file2 = glob("*.modified");
+      open IN20, $file2 or die;
+      my @all_genes = <IN20>;
+      # print Dumper \@all_genes;
+      # open OUTPUT14, ">FOR_INPUT_all_gene_sequence.fa" or die;
 
-        my $total_genes_across_whole_genome = 0;
-        my @all_gene_list_enrichment;
-        for(my $i = 0; $i <= scalar(@all_genes)-2; $i = $i + 2)
-            {
-                my $l1 = $all_genes[$i];
-                my @arr1 = split(">", $l1);
-                my $header = $arr1[1];
-                chomp $header;
-                push (@all_gene_list_enrichment, $header);
-                # my $seq = $all_genes[$i+1];
-                # chomp $seq;
-                # $gene_database{$header} = $seq;
-                $total_genes_across_whole_genome++;
-            }
-        # print Dumper \%gene_database;
-        
-        my $total_alien_genes = 0;
-        my @alien_gene_list_enrichment;
-        foreach my $g (@alien_genes)    
-            {
-                chomp $g;
-                my @arr = split("\t", $g);
-                my $gene = $arr[0];
-                # print $gene,"\n";
-                # print OUTPUT14 ">$gene\n";
-                push(@alien_gene_list_enrichment, $gene);
-                # my $seq = $gene_database{$gene};
-                # print $seq,"\n";
-                # print OUTPUT14 "$seq\n";
-                $total_alien_genes++;
-            }
-        print $total_alien_genes,"\n";
-        print $total_genes_across_whole_genome,"\n";    
-        print "\nPerforming HMMSCAN. Please wait....\n" if ($FLAG_markerGeneEnrichment == 1);    
-        # system (`hmmscan -o $f4\:hmm.txt --tblout $f4\:table.txt reserve/cafe_database_table $file2`);
-        my $file3 = glob("*table.txt");
-        open IN21, $file3 or die;
-        my @hmmscan_data = <IN21>;
-        open OUTPUT15, ">$f4\_marker_genes.txt";
-        open OUTPUT16, ">$f4\_marker_enrichment_statistics.txt";
-        print "\nExtracting marker genes. Please wait....\n" if ($FLAG_markerGeneEnrichment == 1);   
-        my $total_marker_gene_count = 0;
-        my @marker_gene_list_enrichment;
-        for (my $i = 0; $i < scalar(@hmmscan_data); $i++)
-            {
-                chomp $hmmscan_data[$i];
-                next if $hmmscan_data[$i] =~ /^#/;
-                my @arr2 = split('\s+', $hmmscan_data[$i]);
-                my $gene_accession = $arr2[2];
-                my $evalue = $arr2[4];
-                my $gene_description = join(' ', @arr2[18..$#arr2]);
-                my @arr3 = split ('\s+', $hmmscan_data[$i-1]);
-                my $gene_accession1 = $arr3[2];
-                next if ($gene_accession eq $gene_accession1 && defined($gene_accession1));
-                if ($evalue < 0.05)
-                    {
-                        $total_marker_gene_count++;
-                        print OUTPUT15 $gene_accession, "\n";
-                        push (@marker_gene_list_enrichment, $gene_accession);
-                    }
-                # else {print $evalue,"\n";}
+      my $total_genes_across_whole_genome = 0;
+      my @all_gene_list_enrichment;
+      for(my $i = 0; $i <= scalar(@all_genes)-2; $i = $i + 2)
+          {
+              my $l1 = $all_genes[$i];
+              my @arr1 = split(">", $l1);
+              my $header = $arr1[1];
+              chomp $header;
+              push (@all_gene_list_enrichment, $header);
+              # my $seq = $all_genes[$i+1];
+              # chomp $seq;
+              # $gene_database{$header} = $seq;
+              $total_genes_across_whole_genome++;
+          }
+      # print Dumper \%gene_database;
+      
+      my $total_alien_genes = 0;
+      my @alien_gene_list_enrichment;
+      foreach my $g (@alien_genes)    
+          {
+              chomp $g;
+              my @arr = split("\t", $g);
+              my $gene = $arr[0];
+              # print $gene,"\n";
+              # print OUTPUT14 ">$gene\n";
+              push(@alien_gene_list_enrichment, $gene);
+              # my $seq = $gene_database{$gene};
+              # print $seq,"\n";
+              # print OUTPUT14 "$seq\n";
+              $total_alien_genes++;
+          }
+      print $total_alien_genes,"\n";
+      print $total_genes_across_whole_genome,"\n";    
+      print "\nPerforming HMMSCAN. Please wait....\n" if ($FLAG_markerGeneEnrichment == 1);    
+      # system (`hmmscan -o $f4\:hmm.txt --tblout $f4\:table.txt reserve/cafe_database_table $file2`);
+      my $file3 = glob("*table.txt");
+      open IN21, $file3 or die;
+      my @hmmscan_data = <IN21>;
+      open OUTPUT15, ">$f4\_marker_genes.txt";
+      open OUTPUT16, ">$f4\_marker_enrichment_statistics.txt";
+      print "\nExtracting marker genes. Please wait....\n" if ($FLAG_markerGeneEnrichment == 1);   
+      my $total_marker_gene_count = 0;
+      my @marker_gene_list_enrichment;
+      for (my $i = 0; $i < scalar(@hmmscan_data); $i++)
+          {
+              chomp $hmmscan_data[$i];
+              next if $hmmscan_data[$i] =~ /^#/;
+              my @arr2 = split('\s+', $hmmscan_data[$i]);
+              my $gene_accession = $arr2[2];
+              my $evalue = $arr2[4];
+              my $gene_description = join(' ', @arr2[18..$#arr2]);
+              my @arr3 = split ('\s+', $hmmscan_data[$i-1]);
+              my $gene_accession1 = $arr3[2];
+              next if ($gene_accession eq $gene_accession1 && defined($gene_accession1));
+              if ($evalue < 0.05)
+                  {
+                      $total_marker_gene_count++;
+                      print OUTPUT15 $gene_accession, "\n";
+                      push (@marker_gene_list_enrichment, $gene_accession);
+                  }
+              # else {print $evalue,"\n";}
 
-            }
-        print "\nPerforming enrichment. Please wait ....\n" if ($FLAG_markerGeneEnrichment == 1);   
-        my @union; my @isect; 
-        my %union; my %isect;
-        foreach my $a_gene (@alien_gene_list_enrichment)
-            {
-                $union{$a_gene} = 1;
-            }
-        foreach my $m_gene (@marker_gene_list_enrichment)
-            {
-                if ($union{$m_gene})
-                    {
-                        $isect{$m_gene} = 1;
-                    }
-                $union{$m_gene} = 1;
-            }
-        my $count_marker_genes_also_marked_alien_by_APP = keys %isect;
-        print OUTPUT16 "Out of $total_genes_across_whole_genome genes in the genome, we found $total_marker_gene_count marker genes. APP identified $total_alien_genes genes as of alien origin. Out of $total_alien_genes alien genes, $count_marker_genes_also_marked_alien_by_APP were found to be marker genes.\n";
-        my $overlap = $count_marker_genes_also_marked_alien_by_APP;#overlap of set 1 & 2
-        my $total = $total_genes_across_whole_genome;#Total no of genes in genome
-        my $m = $total_alien_genes;#set 1; no. of alien genes
-        my $n = $total - $m;#Total genes - set 1
-        my $k = $total_marker_gene_count;#set 2; no. of marker genes across entiregenome
-        my $expected_no_of_genes = ($m)*($k/$total);
-        my $enrichment = $overlap/$expected_no_of_genes;
-        my $x;#overlap calculation for phyper formulae 
-        if ($overlap < $expected_no_of_genes)
-            {
-                $x = $overlap;
-            }
-        elsif ($overlap > $expected_no_of_genes)
-            {
-                $x = $overlap-1;
-            }
-        my $R = Statistics::R->new();
-        $R->run( qq`x = phyper($x,$m,$n,$k, lower.tail=FALSE)` );
-        my $squares = $R->get('x');
-        print OUTPUT16 "Enrichment = $enrichment\n";
-        if ($squares > 0.5)
-            {
-                my $sig = 1 - $squares;
-                print OUTPUT16 "p-value = $sig\n";
-                
-            }
-        else 
-            {
-                print OUTPUT16 "p-value = ", $squares,"\n";
-            }
-        close(IN19); close(IN20); 
-        close(OUTPUT15); close(OUTPUT16);
-    }
+          }
+      print "\nPerforming enrichment. Please wait ....\n" if ($FLAG_markerGeneEnrichment == 1);   
+      my @union; my @isect; 
+      my %union; my %isect;
+      foreach my $a_gene (@alien_gene_list_enrichment)
+          {
+              $union{$a_gene} = 1;
+          }
+      foreach my $m_gene (@marker_gene_list_enrichment)
+          {
+              if ($union{$m_gene})
+                  {
+                      $isect{$m_gene} = 1;
+                  }
+              $union{$m_gene} = 1;
+          }
+      my $count_marker_genes_also_marked_alien_by_APP = keys %isect;
+      print OUTPUT16 "Out of $total_genes_across_whole_genome genes in the genome, we found $total_marker_gene_count marker genes. APP identified $total_alien_genes genes as of alien origin. Out of $total_alien_genes alien genes, $count_marker_genes_also_marked_alien_by_APP were found to be marker genes.\n";
+      my $overlap = $count_marker_genes_also_marked_alien_by_APP;#overlap of set 1 & 2
+      my $total = $total_genes_across_whole_genome;#Total no of genes in genome
+      my $m = $total_alien_genes;#set 1; no. of alien genes
+      my $n = $total - $m;#Total genes - set 1
+      my $k = $total_marker_gene_count;#set 2; no. of marker genes across entiregenome
+      my $expected_no_of_genes = ($m)*($k/$total);
+      my $enrichment = $overlap/$expected_no_of_genes;
+      my $x;#overlap calculation for phyper formulae 
+      if ($overlap < $expected_no_of_genes)
+          {
+              $x = $overlap;
+          }
+      elsif ($overlap > $expected_no_of_genes)
+          {
+              $x = $overlap-1;
+          }
+      my $R = Statistics::R->new();
+      $R->run( qq`x = phyper($x,$m,$n,$k, lower.tail=FALSE)` );
+      my $squares = $R->get('x');
+      print OUTPUT16 "Enrichment = $enrichment\n";
+      if ($squares > 0.5)
+          {
+              my $sig = 1 - $squares;
+              print OUTPUT16 "p-value = $sig\n";
+              
+          }
+      else 
+          {
+              print OUTPUT16 "p-value = ", $squares,"\n";
+          }
+      close(IN19); close(IN20); close(IN21);
+      close(OUTPUT15); close(OUTPUT16);
+  }
+
+sub get_genbank
+  {
+      print ("\nDownloading GenBank record from NCBI. Please wait....\n");
+      system(`efetch -db nuccore -format gbwithparts -id $f4 > $f4.gb`);
+      my $op_g = "$f4.gb";
+      if (-e $op_g)
+          {
+              print "$op_g has been found and downloaded. Post-processing .....\n";
+              genbank_to_ptt($op_g);
+          }
+      else
+          {
+              print "\n$op_g not found\n";
+              print "\nRecheck accession number. Make sure NCBI e-utilities are installed and in path\n";
+              exit(0);
+          }
+      
+  }
+sub genbank_to_ptt
+  {
+      my ($a) = @_;
+      my $gbk = $a;
+      chomp $gbk;
+      if (-e $gbk)
+          {
+              open IN, $gbk or die;
+          }
+      else {print "\n$gbk doesn't exists\n\n"; exit(0);}
+      open TEMPOUT, ">$f4.tbl" or die;
+      my $random_counter = 0;
+      my $gene_counter = 1;
+      while (<IN>)
+          {
+              if (/^     CDS             /)
+                  {
+                      $_ =~ s/     CDS             //g;
+                      $_ =~ s/<|>//g;
+                      chomp $_;
+                      if ($_ =~ /complement/)
+                          {
+                              if ($_ =~ /join/)
+                                  {
+                                      $_ =~ s/\(|\)|join|complement//g;
+                                      my @a = split(/\./, $_);
+                                      print TEMPOUT "g$gene_counter\t$a[0]\t$a[scalar(@a)-1]\t-\n"; 
+                                  }
+                              else 
+                                  {
+                                      $_ =~ s/\(|\)|complement//g;
+                                      my @a = split(/\./, $_);
+                                      print TEMPOUT "g$gene_counter\t$a[0]\t$a[2]\t-\n"; 
+                                  }
+                          }
+                      else
+                          {
+                              if ($_ =~ /join/)
+                                  {
+                                      $_ =~ s/\(|\)|join//g;
+                                      my @a = split(/\./, $_);
+                                      print TEMPOUT "g$gene_counter\t$a[0]\t$a[scalar(@a)-1]\t+\n";
+                                      my $c1 = $a[0];
+
+                                  }
+                              else 
+                                  {
+                                      my @a = split(/\./, $_);
+                                      print TEMPOUT "g$gene_counter\t$a[0]\t$a[2]\t+\n";
+                                  }
+                          }
+                  
+                      $gene_counter++;
+                  }
+          }
+      print ("\nFeature table computed for gene map. Please wait....\n");
+      close(TEMPOUT);
+      gene_map_builder();
+
+  }
+sub gene_map_builder
+  {
+      my $file1 = "$f4\_APP_Alien_genes.txt";
+      open IN21, $file1 or die;
+      my @alien_genes = <IN21>;
+
+      my $file2 = "$f4.tbl";
+      open IN22, $file2 or die;
+      my @ptt = <IN22>;
+      # print scalar(@ptt),"\n";
+      my %ptt_db;
+      foreach my $g (@ptt)
+          {
+              chomp $g;
+              my @a = split(/\t/, $g);
+              # print $a[0],"\n";
+              $ptt_db{$a[0]}{"start"} = $a[1];
+              $ptt_db{$a[0]}{"end"} = $a[2];
+              $ptt_db{$a[0]}{"strand"} = $a[3];
+          } 
+      # print Dumper \%ptt_db;
+      print "\nGenerating plotting files for CGViewer. Please wait...\n";
+      open OUTPUT17, ">cgview_alien_genes.txt";
+      print OUTPUT17"seqname	source	feature	start	end	score	strand	frame\n";
+      # open OUTPUT18, ">cgview_Recent_alien_genes.txt";
+      # print OUTPUT18"seqname	source	feature	start	end	score	strand	frame\n";
+      foreach my $l (@alien_genes)
+          {
+              chomp $l;
+              next if $l !~ /:g/;
+              my @a = split("\t", $l);
+              my @b = split(":", $a[0]);
+              my $gene = $b[scalar(@b)-1];
+              
+              my $gene_start = $ptt_db{$gene}{"start"};
+              my $gene_end = $ptt_db{$gene}{"end"};
+              my $gene_strand = $ptt_db{$gene}{"strand"};
+              my $transfer = $a[2];
+              if ($gene_strand eq '+')
+                  {
+                      if ($transfer eq "Ancient")
+                          {
+                              print OUTPUT17 "$gene\t\tF\t$gene_start\t$gene_end\t\t+\n";
+                          }
+                      elsif ($transfer eq "Recent")
+                          {
+                              print OUTPUT17 "$gene\t\tA\t$gene_start\t$gene_end\t\t+\n";
+                          }
+                  }
+              elsif ($gene_strand eq '-')
+                  {
+                      if ($transfer eq "Ancient")
+                          {
+                              print OUTPUT17 "$gene\t\tF\t$gene_start\t$gene_end\t\t-\n";
+                          }
+                      elsif ($transfer eq "Recent")
+                          {
+                              print OUTPUT17 "$gene\t\tA\t$gene_start\t$gene_end\t\t-\n";
+                          }
+                  }
+              
+          }
+      close(OUTPUT17);
+      print "\nRunning CGViewer. Please wait...\n";
+      if ($verboseDetailed == 1)
+          {
+              system (`perl cgview_xml_builder.pl -sequence $f4.gb -out $f4.xml -genes cgview_alien_genes.txt  -details F -show_sequence_feature F -gene_labels F -custom moveInnerLabelsToOuter=true tickLength=20 featureOpacity=1 featureOpacityOther=1 backboneRadius=1000 -legend T `);
+          }
+      else 
+          {
+              system (`perl cgview_xml_builder.pl -verbose F -sequence $f4.gb -out $f4.xml -genes cgview_alien_genes.txt  -details F -show_sequence_feature F -gene_labels F -custom moveInnerLabelsToOuter=true tickLength=20 featureOpacity=1 featureOpacityOther=1 backboneRadius=1000 -legend T `);
+          }
+      
+      my $file3 = "$f4.xml";
+      open IN23, $file3 or die;
+      my @xml = <IN23>;
+      open OUTPUT18, ">$f4\_modified.xml";
+      foreach my $l (@xml)
+          {
+              # chomp $l;
+              if ($l =~ /A COG/) {$l =~ s/A COG/Recent/g;}
+              if (($l =~ /F COG/)) {$l =~ s/F COG/Ancient/g;}
+              next if $l =~ /B COG|J COG|K COG|L COG|D COG|O COG|M COG|N COG|P COG|T COG|U COG|V COG|W COG|Y COG|Z COG|C COG|G COG|E COG|H COG|CDS|I COG|Q COG|R COG|S COG|Unknown COG|legendItem text="tRNA"|legendItem text="rRNA"|legendItem text="Other"/;
+              print OUTPUT18 $l;
+          }
+      close(OUTPUT18);
+      system(`java -jar -Xmx2000m cgview.jar -i $f4\_modified.xml -o $f4\_HGT_map.png -f png -D 48`);
+      close(IN21);close(IN22);close(IN23);
+
+  }
+
+
 
 sub process_fasta
   {
@@ -1601,6 +1784,8 @@ optional arguments:
 -n - No. of CPU cores to use for performing blast. By default, uses all available cores.
 
 -m - Marker gene enrichment. Default set to 0. Use 1 only when whole genome is analyzed.
+
+-g - Generate circular gene map with alien genes. Default set to 0. Use 1 only when whole genome is analyzed.
 
 -e - turn on Expert option (1; keep temporary and intermediate files). Default set to 0. 
 

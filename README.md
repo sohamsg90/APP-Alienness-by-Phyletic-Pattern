@@ -2,6 +2,14 @@
 
 APP, is a phyletic pattern analysis tool that uses comparative genomics to detect horizontally acquired genes. 
 
+
+# Using the APP docker image
+Pull the docker image
+
+```docker pull sohamsg90/app```
+
+
+# Using step-by-step local installation
 Prior to using APP for the first time, please go through the following steps in sequential order. The instructions will guide you to initialize folders, install relevant dependencies and setup required databases.
 
 # Initialization

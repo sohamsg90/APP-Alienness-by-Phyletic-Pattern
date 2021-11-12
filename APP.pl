@@ -9,6 +9,7 @@ use strict;
 use Data::Dumper;
 use Getopt::Long;
 use List::MoreUtils qw(uniq);
+use Statistics::R;
 ### Get my parameters for program ###
 my %param = (
     query                 => undef,

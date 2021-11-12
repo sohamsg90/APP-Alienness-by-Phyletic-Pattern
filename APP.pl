@@ -122,7 +122,7 @@ if ($param{generateGeneMaps} == 1)
 ##### Main program #####
 
 ### Default input files ###
-my $f1 = "1.REFSEQ_all_kingdoms_ftplinks_lineage.txt";#taxidlist_bacteria_complete_full_lineage.txt
+my $f1 = glob("/home/reserve/1.REFSEQ_all_kingdoms_ftplinks_lineage.txt");#taxidlist_bacteria_complete_full_lineage.txt
 open IN, $f1 or die;
 print "\nTaxonomic database imported....\n" if ($verbose == 1);
 my @refseq_dataset = <IN>;
@@ -1423,7 +1423,7 @@ sub marker_gene_enrichment
       print $total_alien_genes,"\n";
       print $total_genes_across_whole_genome,"\n";    
       print "\nPerforming HMMSCAN. Please wait....\n" if ($FLAG_markerGeneEnrichment == 1);    
-      system (`hmmscan -o $f4\:hmm.txt --tblout $f4\:table.txt reserve/cafe_database_table $file2`);
+      system (`hmmscan -o $f4\:hmm.txt --tblout $f4\:table.txt /home/reserve/cafe_database_table $file2`);
       my $file3 = glob("*table.txt");
       open IN21, $file3 or die;
       my @hmmscan_data = <IN21>;

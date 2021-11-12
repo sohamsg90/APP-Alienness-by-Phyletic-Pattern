@@ -1423,7 +1423,7 @@ sub marker_gene_enrichment
       print $total_alien_genes,"\n";
       print $total_genes_across_whole_genome,"\n";    
       print "\nPerforming HMMSCAN. Please wait....\n" if ($FLAG_markerGeneEnrichment == 1);    
-      # system (`hmmscan -o $f4\:hmm.txt --tblout $f4\:table.txt reserve/cafe_database_table $file2`);
+      system (`hmmscan -o $f4\:hmm.txt --tblout $f4\:table.txt reserve/cafe_database_table $file2`);
       my $file3 = glob("*table.txt");
       open IN21, $file3 or die;
       my @hmmscan_data = <IN21>;
@@ -1647,11 +1647,11 @@ sub gene_map_builder
       print "\nRunning CGViewer. Please wait...\n";
       if ($verboseDetailed == 1)
           {
-              system (`perl cgview_xml_builder.pl -sequence $f4.gb -out $f4.xml -genes cgview_alien_genes.txt  -details F -show_sequence_feature F -gene_labels F -custom moveInnerLabelsToOuter=true tickLength=20 featureOpacity=1 featureOpacityOther=1 backboneRadius=1000 -legend T `);
+              system (`cgview_xml_builder.pl -sequence $f4.gb -out $f4.xml -genes cgview_alien_genes.txt  -details F -show_sequence_feature F -gene_labels F -custom moveInnerLabelsToOuter=true tickLength=20 featureOpacity=1 featureOpacityOther=1 backboneRadius=1000 -legend T `);
           }
       else 
           {
-              system (`perl cgview_xml_builder.pl -verbose F -sequence $f4.gb -out $f4.xml -genes cgview_alien_genes.txt  -details F -show_sequence_feature F -gene_labels F -custom moveInnerLabelsToOuter=true tickLength=20 featureOpacity=1 featureOpacityOther=1 backboneRadius=1000 -legend T `);
+              system (`cgview_xml_builder.pl -verbose F -sequence $f4.gb -out $f4.xml -genes cgview_alien_genes.txt  -details F -show_sequence_feature F -gene_labels F -custom moveInnerLabelsToOuter=true tickLength=20 featureOpacity=1 featureOpacityOther=1 backboneRadius=1000 -legend T `);
           }
       
       my $file3 = "$f4.xml";
@@ -1667,7 +1667,7 @@ sub gene_map_builder
               print OUTPUT18 $l;
           }
       close(OUTPUT18);
-      system(`java -jar -Xmx2000m cgview.jar -i $f4\_modified.xml -o $f4\_HGT_map.png -f png -D 48`);
+      system(`java -jar -Xmx2000m /usr/local/bin/cgview.jar -i $f4\_modified.xml -o $f4\_HGT_map.png -f png -D 48`);
       close(IN21);close(IN22);close(IN23);
 
   }

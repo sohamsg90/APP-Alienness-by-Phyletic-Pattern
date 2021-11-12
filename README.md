@@ -6,7 +6,9 @@ APP, is a phyletic pattern analysis tool that uses comparative genomics to detec
 # Using the APP docker image
 Pull the docker image
 
-```docker pull sohamsg90/app```
+```
+docker pull sohamsg90/app
+```
 
 
 # Using step-by-step local installation

@@ -72,7 +72,7 @@ To run the program, simply type in:
 ```
 docker run --rm -v "$(pwd)":/dir -w /dir image_app_v1 /usr/local/bin/APP.pl -q <query fileName> -t <query taxonomy file> -o <Output fileName> -f <fileType> [Options]
 ```
-
+***Note:*** The main script file, query sequence file and taxonomic ID file must be placed in the same working/current directory.
 
 
 ## Using step-by-step local installation

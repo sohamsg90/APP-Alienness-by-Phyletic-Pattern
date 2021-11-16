@@ -22,7 +22,7 @@ APP requires two input files -
 1. A file with taxonomic IDs of the associated genome
 2. A multiFASTA protein sequence file
 
-### Constructing taxonomic ID file
+### 1. Constructing taxonomic ID file
 
 Run the docker image and use the [input_file_prepare.pl](https://github.com/sohamsg90/APP-Alienness-by-Phyletic-Pattern/blob/main/scripts/taxonomy/input_file_prepare.pl) to create a taxonomic ID file `3.query_speciesID_taxID.txt`. 
 
@@ -40,7 +40,7 @@ The output of the file looks like this:
 
 This file has to be imported into the program. A new file is to be generated whenever analyzing a new genome.
 
-### MultiFASTA protein sequence file
+### 2. MultiFASTA protein sequence file
 
 APP has the capability to take input either a multiFASTA file or download the entire proteome of the genome of choice. 
 

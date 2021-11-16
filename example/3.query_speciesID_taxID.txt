@@ -1,2 +1,0 @@
-Acc	species	taxid
-NC_004088	632	187410

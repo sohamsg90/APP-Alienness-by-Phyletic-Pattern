@@ -60,6 +60,13 @@ docker run --rm -v "$(pwd)":/dir -w /dir image_app_v1 /usr/local/bin/APP.pl NC_0
 
 Note that the input type has changed to `accession`. With the help of pre-installed NCBI eutilities, the program  will download the complete proteome accordingly.
 
+**Option 3:**
+If marker gene enrichment is to be performed along with generation of circular genome maps.
+
+```
+ docker run --rm -v "$(pwd)":/dir -w /dir image_app_v1 /usr/local/bin/APP.pl -q NC_004088.faa -t 3.query_speciesID_taxID.txt -o NC_004088 -f multifasta -m 1 -g 1
+ ```
+
 ***Tips:***
 
 **Option 1** is directed when the user has a limited set of sequences to analyze, belonging to the same genome.

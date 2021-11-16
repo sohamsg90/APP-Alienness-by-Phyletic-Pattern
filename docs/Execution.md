@@ -71,11 +71,15 @@ Following set of options are available with the program.
 
 -n - No. of CPU cores to use for performing blast. By default, uses all available cores.
 
--e - turn on Expert option (1; keep temporary and intermediate files). Default set to 0.
+-m - Marker gene enrichment. Default set to 0. Use 1 only when whole genome is analyzed.
+
+-g - Generate circular gene map with alien genes. Default set to 0. Use 1 only when whole genome is analyzed.
+
+-e - turn on Expert option (1; keep temporary and intermediate files). Default set to 0. 
 
 -v - Provide basic progress messages. Default set to 1.
 
--vv -Provide detailed progress messages. Default set to 0.
+-d - Provide detailed progress messages. Default set to 0.
 
 ## Expected space requirements
 

@@ -13,7 +13,7 @@ Pull the docker image
 
 ```
 cd APP-Alienness-by-Phyletic-Pattern/example
-docker pull sohamsg90/app
+docker pull sohamsg90/image_app_v1
 ```
 ## Input
 We are using a random genome *Yersinia pestis KIM10+* to perform our sample run . The NCBI accession number is  [NC_004088](https://www.ncbi.nlm.nih.gov/nuccore/NC_004088.1/).
@@ -29,7 +29,7 @@ Run the docker image and use the [input_file_prepare.pl](https://github.com/soha
 An input file with the genome accession number (NCBI), [accession_number.txt](https://github.com/sohamsg90/APP-Alienness-by-Phyletic-Pattern/blob/main/example/accession_number.txt)  is to be provided.
 
 ```
-docker run --rm -v "$(pwd)":/dir -w /dir app /usr/local/bin/input_file_prepare.pl accession_number.txt
+docker run --rm -v "$(pwd)":/dir -w /dir image_app_v1 /usr/local/bin/input_file_prepare.pl accession_number.txt
 ```
 This generates a file `3.query_speciesID_taxID.txt` with the species ID and taxonomic ID of the genome (from NCBI taxonomy database).
 

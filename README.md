@@ -55,7 +55,7 @@ In the former case, a file must be provided to the program specifying the type o
 Alternatively, the user can supply the genome accession number (e.g. NC_004088) as a command-line input.
 
 ```
-docker run --rm -v "$(pwd)":/dir -w /dir image_app_v1 /usr/local/bin/APP.pl NC_004088.faa -t 3.query_speciesID_taxID.txt -o NC_004088 -f accession
+docker run --rm -v "$(pwd)":/dir -w /dir image_app_v1 /usr/local/bin/APP.pl NC_004088 -t 3.query_speciesID_taxID.txt -o NC_004088 -f accession
 ```
 
 Note that the input type has changed to `accession`. With the help of pre-installed NCBI eutilities, the program  will download the complete proteome accordinly.

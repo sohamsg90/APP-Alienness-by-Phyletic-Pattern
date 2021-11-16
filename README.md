@@ -12,13 +12,24 @@ git clone https://github.com/sohamsg90/APP-Alienness-by-Phyletic-Pattern
 Pull the docker image
 
 ```
-cd APP-Alienness-by-Phyletic-Pattern/example
+cd APP-Alienness-by-Phyletic-Pattern/example/
 docker pull sohamsg90/app
 ```
-Run the docker image and use the [input_file_prepare.pl](https://github.com/sohamsg90/APP-Alienness-by-Phyletic-Pattern/blob/main/scripts/taxonomy/input_file_prepare.pl) to create a taxonomic ID file (`3.query_speciesID_taxID.txt`)
+Run the docker image and use the [input_file_prepare.pl](https://github.com/sohamsg90/APP-Alienness-by-Phyletic-Pattern/blob/main/scripts/taxonomy/input_file_prepare.pl) to create a taxonomic ID file `3.query_speciesID_taxID.txt`. 
 
+An input file with the genome accession number (NCBI) is to be provided.
 
+```
+docker run --rm -v "$(pwd)":/dir -w /dir app /usr/local/bin/input_file_prepare.pl accession_number.txt
+```
+This generates a file `3.query_speciesID_taxID.txt` with the species ID and taxonomic ID of the genome (from NCBI taxonomy database).
 
+The output of the file looks like this:
+| Acc       | speciesid | taxid  |
+| --------- | --------- | ------ |
+| NC_004088 | 632       | 187410 |
+
+This file is imported by default into the program. A new file has to be generated whenever analyzing a new genome.
 
 
 

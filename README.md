@@ -86,15 +86,49 @@ docker run --rm -v "$(pwd)":/dir -w /dir sohamsg90/image_app_v1 /usr/local/bin/A
 ```
 ***Note:*** The main script file, query sequence file and taxonomic ID file must be placed in the same working/current directory.
 
+### Options
 
-## Using step-by-step local installation
-Prior to using APP for the first time, please go through the following steps in sequential order. The instructions will guide you to initialize folders, install relevant dependencies and setup required databases.
+Following set of options are available with the program.
 
-# Initialization
-[Initialization.md](https://github.com/sohamsg90/APP-Alieness-by-Phyletic-Pattern/blob/main/docs/Initialization.md)
-# Installation
-[Installation.md](https://github.com/sohamsg90/APP-Alieness-by-Phyletic-Pattern/blob/main/docs/Installation.md)
-# Taxonomic database setup
-[Taxonomy.md](https://github.com/sohamsg90/APP-Alieness-by-Phyletic-Pattern/blob/main/docs/Taxonomy.md)
-# Tutorial
-[Execution.md](https://github.com/sohamsg90/APP-Alieness-by-Phyletic-Pattern/blob/main/docs/Execution.md)
+#### required arguments:
+-q - multifasta amino acid file or genome acession number (NCBI only).
+
+-t - query specific taxonomic id file.
+
+-o - Output file name to create.
+
+-f - File type as 'multifasta' or 'accession'.
+
+#### optional arguments:
+
+-n - No. of CPU cores to use for performing blast. By default, uses all available cores.
+
+-m - Marker gene enrichment. Default set to 0. Use 1 only when whole genome is analyzed.
+
+-g - Generate circular gene map with alien genes. Default set to 0. Use 1 only when whole genome is analyzed.
+
+-e - turn on Expert option (1; keep temporary and intermediate files). Default set to 0. 
+
+-v - Provide basic progress messages. Default set to 1.
+
+-d - Provide detailed progress messages. Default set to 0.
+
+## Expected space requirements
+
+APP downloads genomes from NCBI ftp server in real-time. Henceforth, depending on the availability of completely sequenced genomes, and the abundance of genomes of the associated taxonomic ranks, the size of the downloaded database will vary, from genome to genome.
+
+
+## Output analysis
+In the default mode, the program provides a genome-wide list of genes (accession numbers) which are deemed horizontally acquired. Additionally, the program also predicts whether the horizontal gene transfer event was recent or ancient.
+
+
+## Running in HPC environment
+In high-performance cluster environemnt, user might not have sudo access to install docker daemon. 
+HPC enviroments have the facilty to run singularity images without sudo access. 
+# Pull docker image to build local singularity image
+singularity pull APP.sif docker://sohamsg90/image_app_v1
+
+# Execute using following command
+singularity exec "$(pwd)"/APP.sif APP.pl -q "$(pwd)"/NC_004088.faa -t "$(pwd)"/3.query_speciesID_taxID.txt -o NC_004088 -f multifasta
+
+

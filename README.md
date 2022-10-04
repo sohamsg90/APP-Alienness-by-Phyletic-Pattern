@@ -125,10 +125,12 @@ In the default mode, the program provides a genome-wide list of genes (accession
 ## Running in HPC environment
 In high-performance cluster environemnt, user might not have sudo access to install docker daemon. 
 HPC enviroments have the facilty to run singularity images without sudo access. 
-# Pull docker image to build local singularity image
+### Pull docker image to build local singularity image
+```
 singularity pull APP.sif docker://sohamsg90/image_app_v1
-
-# Execute using following command
+```
+### Execute using following command
+```
 singularity exec "$(pwd)"/APP.sif APP.pl -q "$(pwd)"/NC_004088.faa -t "$(pwd)"/3.query_speciesID_taxID.txt -o NC_004088 -f multifasta
-
+```
 

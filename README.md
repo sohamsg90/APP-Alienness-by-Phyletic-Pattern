@@ -5,7 +5,7 @@ APP, is a phyletic pattern analysis tool that uses comparative genomics to detec
 ## Methodology
 
 [APP architecture](https://github.com/sohamsg90/APP-Alienness-by-Phyletic-Pattern/blob/main/APP_architecture.png)
-![APP_architecture](https://user-images.githubusercontent.com/43525619/187593303-09026817-1875-4e5e-acd8-449185bb14f3.png)
+![APP_architecture](https://github.com/sohamsg90/APP-Alienness-by-Phyletic-Pattern/blob/main/APP_architecture.tif)
 
 ## Download files
 
